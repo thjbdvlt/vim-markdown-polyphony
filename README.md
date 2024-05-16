@@ -8,6 +8,16 @@ additional markdown highlights for vim:
 
 the repository also contains a [pandoc lua filter](https://pandoc.org/lua-filters.html) to remove `,,` comments when exported with pandoc.
 
+quotes and parentheses
+----------------------
+
+quotes and parentheses, of course, are not part of _markdown syntax_. these are more like _semantic highlights_.
+
+why that? because i want _inline quotes_ to be the same color as _block quote_ because they play the same role, they have the same kind of difference with the sentences that i write: one color for sentences i wrote, one color for sentences i quote.
+this also make me see quickly if a whole paragraph i just 'wrote' is just a bunch of quotation clumsily organised, if a chapter contains too many (or too few) citations.
+
+that's the same logic for parentheses: _syntax highlights_ is supposed to make me see not only the _nature_ (or _role_) of the text components, but also to make me see the _structure_ of my code. and in texts in natural language (such as ones i wrote in markdown), parentheses play a role in this structure. therefore i want them to be highlights, to be visually isolated because they are semantic isolations.
+
 comma comments
 --------------
 
