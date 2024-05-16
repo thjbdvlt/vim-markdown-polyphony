@@ -13,18 +13,24 @@
 setl commentstring=\,,%s\,,
 
 " comment with ,,
-syn region Comment 
+syn region Comment
             \ start=/,,/ end=/,,/
             \ containedin=ALLBUT,Comment,markdownCode,markdownCodeBlock
 
 " citation key: @becker2020
-syn match CitationKey "@[a-zÀ-ÿ0-9_]\+" 
+syn match CitationKey "@[a-zÀ-ÿ0-9_]\+"
             \ containedin=ALLBUT,Comment,markdownCode,markdownCodeBlock
 
 " inline quotes
-syn region String start=/"/ end=/"/ contains=Paratext,Footnote keepend
-syn region String start=/«/ end=/»/ contains=Paratext,Footnote keepend
-syn region String start=/“/ end=/”/ contains=Paratext,Footnote keepend
+syn region String start=/"/ skip=/\\"/ end=/"/
+            \ contains=TOP,Parenthese,markdownCode,markdownCodeBlock
+            \ keepend
+syn region String start=/«/ skip=/\\»/ end=/»/
+            \ contains=TOP,Parenthese,markdownCode,markdownCodeBlock
+            \ keepend
+syn region String start=/“/ skip=/\\”/ end=/”/
+            \ contains=TOP,Parenthese,markdownCode,markdownCodeBlock
+            \ keepend
 
 " block quote
 syn region String start="^> " end="$"
@@ -33,7 +39,7 @@ syn region String start="^> " end="$"
 syn region Paratext matchgroup=ParaMarker
             \ start="\[" skip="\\\]" end="\]"
             \ contains=CitationKey,String,Comment,url,Underlined
-            \ containedin=ALLBUT,Comment,markdownCode,markdownCodeBloc 
+            \ containedin=ALLBUT,Comment,markdownCode,markdownCodeBloc
             \ keepend
 
 " [^1]: pretty footnote in a small font
@@ -42,14 +48,17 @@ syn region Paratext matchgroup=ParaMarker
             \ contains=CitationKey,String,Comment,url,Underlined
             \ keepend
 
+" parentheses
 syn region Parenthese matchgroup=Parenthese
             \ start="(" end=")"
+            \ contains=TOP
 
 " url (or file path) in link like this: [magic place](magic url)
-syn region Url matchgroup=Paratext start=/\]\@<=(/ end=/)/
+syn region Url matchgroup=Paratext 
+            \ start=/\]\@<=(/ end=/)/
 
 " url in text, like: https://on-tenk.fr
-syn match Url 
+syn match Url
             \ "\(https\?\|ftp\)://\S\+[[:alpha:][:digit:]/]"
             \ containedin=ALLBUT,Comment,markdownCode,markdownCodeBlock
 
