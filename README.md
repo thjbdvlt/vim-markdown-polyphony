@@ -11,6 +11,8 @@ the repository also contains a [pandoc lua filter](https://pandoc.org/lua-filter
 comma comments
 --------------
 
+![comments with `,,`](./img/vim.png)
+
 html comments are much too long, sometimes even longer than the comment itself:
 
 ```markdown
@@ -33,7 +35,7 @@ local ft = require('Comment.ft')
 ft.set('markdown', {',,%s,,', ',,%s,,'})
 ```
 
-installation
-------------
+install
+-------
 
 just like any other vim plugin, or append the content of the syntax file to `after/syntax/markdown.vim`.
