@@ -1,4 +1,4 @@
-additional markdown highlights for [pandoc luafilter](https://pandoc.org/lua-filters.html):
+additional markdown highlights for vim:
 
 - quotes
 - comments with `,,`
