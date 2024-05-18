@@ -38,14 +38,14 @@ syn region String start="^> " end="$"
 " [@becker2020], [^1]: ..., [cool thing](./some/path), etc.
 syn region Paratext matchgroup=ParaMarker
             \ start="\[" skip="\\\]" end="\]"
-            \ contains=CitationKey,String,Comment,url,Underlined
+            \ contains=CitationKey,String,Comment,Underlined
             \ containedin=ALLBUT,Comment,markdownCode,markdownCodeBloc
             \ keepend
 
 " [^1]: pretty footnote in a small font
 syn region Paratext matchgroup=ParaMarker
             \ start="^\[^\w\+\]:" end="$"
-            \ contains=CitationKey,String,Comment,url,Underlined
+            \ contains=CitationKey,String,Comment,Underlined,Url
             \ keepend
 
 " parentheses
@@ -56,11 +56,6 @@ syn region Parenthese matchgroup=Parenthese
 " url (or file path) in link like this: [magic place](magic url)
 syn region Url matchgroup=Paratext 
             \ start=/\]\@<=(/ end=/)/
-
-" url in text, like: https://on-tenk.fr
-syn match Url
-            \ "\(https\?\|ftp\)://\S\+[[:alpha:][:digit:]/]"
-            \ containedin=ALLBUT,Comment,markdownCode,markdownCodeBlock
 
 "  links to highlight groups
 hi! link  CitationKey Underlined
