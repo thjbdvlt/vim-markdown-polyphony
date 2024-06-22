@@ -1,10 +1,12 @@
-additional markdown highlights for vim:
+markdown syntax for vim:
 
 - quotes
 - comments with `,,`
 - footnotes
 - parentheses
 - citation keys (for pandoc)
+
+(and basic markdown syntax: emphasis, strong, heading, code)
 
 the repository also contains a [pandoc lua filter](https://pandoc.org/lua-filters.html) to remove `,,` comments when exported with pandoc.
 
