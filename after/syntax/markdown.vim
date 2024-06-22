@@ -6,7 +6,8 @@
 "
 "  and comment with ,, (because html comment are much too long).
 "
-"  and minimal support for basic markdown syntax:
+"  and minimal support for basic markdown syntax,
+"  taken from tpope: https://github.com/tpope/vim-markdown
 "  - italic (emphasis), bold (strong)
 "  - heading
 "  - html comment
