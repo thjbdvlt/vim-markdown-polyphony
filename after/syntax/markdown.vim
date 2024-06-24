@@ -9,17 +9,13 @@
 "  and minimal support for basic markdown syntax,
 "  taken from tpope: https://github.com/tpope/vim-markdown
 "  - italic (emphasis)
+"  - bold (strong)
 "  - heading
 "  - html comment
 "  - code (inline and block)
 "
-"  TODO: 
-"  - bold (strong)
-"  - italic + string
+"  TODO:
 "  - italic + bold
-"  - string + bold
-"  - parenthese + italic
-"  - parenthese + bold
 
 " comment with ,,
 setl commentstring=\,,%s\,,
@@ -111,6 +107,30 @@ syn region ItalicParenthese
             \ end="\S\@<=_\|_\S\@="  
             \ containedin=Parenthese
             \ contains=@NoSpell
+            \ contained
+            \ keepend
+
+" bold
+syn region Bold
+            \ start="\S\@<=__\|__\S\@=" 
+            \ skip="\\__"
+            \ end="\S\@<=__\|__\S\@="  
+
+" bold
+syn region BoldString
+            \ start="\S\@<=__\|__\S\@=" 
+            \ skip="\\__"
+            \ end="\S\@<=__\|__\S\@="  
+            \ containedin=String
+            \ contained
+            \ keepend
+
+" bold
+syn region BoldParenthese
+            \ start="\S\@<=__\|__\S\@=" 
+            \ skip="\\__"
+            \ end="\S\@<=__\|__\S\@="  
+            \ containedin=Parenthese
             \ contained
             \ keepend
 
