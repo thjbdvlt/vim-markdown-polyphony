@@ -8,10 +8,18 @@
 "
 "  and minimal support for basic markdown syntax,
 "  taken from tpope: https://github.com/tpope/vim-markdown
-"  - italic (emphasis), bold (strong)
+"  - italic (emphasis)
 "  - heading
 "  - html comment
 "  - code (inline and block)
+"
+"  TODO: 
+"  - bold (strong)
+"  - italic + string
+"  - italic + bold
+"  - string + bold
+"  - parenthese + italic
+"  - parenthese + bold
 
 " comment with ,,
 setl commentstring=\,,%s\,,
@@ -20,11 +28,13 @@ setl commentstring=\,,%s\,,
 syn region Comment
             \ start=/,,/ end=/,,/
             \ containedin=ALLBUT,Comment,Code
+            \ keepend
 
-" comment with ,,
+" html comments
 syn region Comment
             \ start=/<!--/ end=/-->/
             \ containedin=ALLBUT,Comment,Code
+            \ keepend
 
 " citation key: @becker2020
 syn match CitationKey "@[a-zÀ-ÿ0-9_]\+"
@@ -33,18 +43,18 @@ syn match CitationKey "@[a-zÀ-ÿ0-9_]\+"
 
 " inline quotes
 syn region String start=/"/ skip=/\\"/ end=/"/
-            \ contains=CONTAINED
+            \ contains=Parenthese,ItalicString
             \ keepend
 syn region String start=/«/ skip=/\\»/ end=/»/
-            \ contains=TOP,Parenthese,Code
+            \ contains=Parenthese,ItalicString
             \ keepend
 syn region String start=/“/ skip=/\\”/ end=/”/
-            \ contains=CONTAINED
+            \ contains=Parenthese,ItalicString
             \ keepend
 
 " block quote
 syn region String start="^> " end="$"
-            \ contains=CONTAINED
+            \ contains=Parenthese,ItalicString
             \ keepend
 
 " [@becker2020], [^1]: ..., [cool thing](./some/path), etc.
@@ -60,9 +70,9 @@ syn region Paratext matchgroup=ParaMarker
             \ keepend
 
 " parentheses
-syn region Parenthese matchgroup=Parenthese
+syn region Parenthese
             \ start="(" end=")"
-            \ contains=TOP
+            \ contains=String,Italic
             \ containedin=ALLBUT,Code
 
 " url (or file path) in link like this: [magic place](magic url)
@@ -71,20 +81,37 @@ syn region Url matchgroup=Paratext
             \ contains=@NoSpell
 
 " italic with *
-syn region Italic matchgroup=Italic
+syn region Italic
             \ start="\S\@<=\*\|\*\S\@=" 
             \ skip="\\\*"
             \ end="\S\@<=\*\|\*\S\@="  
-            \ contains=ALL
-            \ keepend
+            \ contains=@NoSpell
 
 " italic with _
-syn region Italic matchgroup=Italic
+syn region Italic
             \ start="\S\@<=_\|_\S\@=" 
             \ skip="\\_"
             \ end="\S\@<=_\|_\S\@="  
-            \ contains=ALL
-            \ containedin=ALLBUT,comment,Code
+            \ contains=@NoSpell
+
+" italic + string
+syn region ItalicString
+            \ start="\S\@<=_\|_\S\@=" 
+            \ skip="\\_"
+            \ end="\S\@<=_\|_\S\@="  
+            \ containedin=String
+            \ contained
+            \ contains=@NoSpell
+            \ keepend
+
+" italic + string
+syn region ItalicParenthese
+            \ start="\S\@<=_\|_\S\@=" 
+            \ skip="\\_"
+            \ end="\S\@<=_\|_\S\@="  
+            \ containedin=Parenthese
+            \ contains=@NoSpell
+            \ contained
             \ keepend
 
 " inline code: `
