@@ -72,7 +72,7 @@ syn region Paratext matchgroup=ParaMarker
 " parentheses
 syn region Parenthese
             \ start="(" end=")"
-            \ contains=String,Italic
+            \ contains=String,Code
             \ containedin=ALLBUT,Code
 
 " url (or file path) in link like this: [magic place](magic url)
@@ -124,6 +124,9 @@ syn region Code
             \ start=/^```/ end=/```/
             \ contains=@NoSpell
 
+" les listes
+syn match ListItem "^\- \|^\d\."
+
 " headings
 syn match Title "^.\+\n-\+$" contains=TitleMarker
 syn match Title "^.\+\n=\+$" contains=TitleMarker
@@ -142,3 +145,4 @@ hi default link ParaMarker  Statement
 hi default link Footnote    Paratext
 hi default link Code Type
 hi default link TitleMarker Statement
+hi default link ListItem Statement
