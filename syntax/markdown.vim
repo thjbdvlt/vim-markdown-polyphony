@@ -166,3 +166,5 @@ hi default link Footnote    Paratext
 hi default link Code Type
 hi default link TitleMarker Statement
 hi default link ListItem Statement
+
+let b:current_syntax = "markdown"

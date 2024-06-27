@@ -50,4 +50,4 @@ ft.set('markdown', {',,%s,,', ',,%s,,'})
 install
 -------
 
-just like any other vim plugin, or append the content of the syntax file to `after/syntax/markdown.vim`.
+just like any other vim plugin, or append the content of the syntax file to `syntax/markdown.vim`
