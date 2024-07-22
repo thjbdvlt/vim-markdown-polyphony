@@ -75,6 +75,8 @@ syn region Parenthese
 syn region Url matchgroup=Paratext 
             \ start=/\]\@<=(/ end=/)/
             \ contains=@NoSpell
+            \ containedin=ALLBUT,Comment,Code
+            \ keepend
 
 " italic with *
 syn region Italic
