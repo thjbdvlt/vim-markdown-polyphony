@@ -87,9 +87,9 @@ syn region Italic
 
 " italic with _
 syn region Italic
-            \ start="\S\@<=_\|_\S\@=" 
+            \ start="\W\@<=_\w\@=\|^_\w\@="
             \ skip="\\_"
-            \ end="\S\@<=_\|_\S\@="  
+            \ end="\w\@<=_\W\@=\|_$"
             \ contains=@NoSpell
 
 " italic + string
