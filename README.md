@@ -36,8 +36,8 @@ that's why i added a shorter and easier-to-write syntax. i never use double comm
 to run the lua filter, just run `pandoc` with `-L` option:
 
 ```bash
-pandoc -L /path/to/luafilter/commacomment.lua 
-    \ -i README.md -o README.pdf -f markdown -t pdf
+pandoc -L /path/to/luafilter/commacomment.lua \
+    -i README.md -o README.pdf -f markdown -t pdf
 ```
 
 if you use [Comment.nvim](https://github.com/numToStr/Comment.nvim) plugin, adding following code will say Comment.nvim to use `,,` syntax for (un)commenting:
