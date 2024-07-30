@@ -155,7 +155,7 @@ syn region YamlFrontMatter
 syn match YamlKey "^[^: ]\+:" containedin=YamlFrontMatter contained contains=@NoSpell
 
 " les listes
-syn match ListItem "^\- \|^\d\."
+syn match ListItem "^\s*\- \|^\d\."
 
 " headings
 syn match Title "^.\+\n-\+$" contains=TitleMarker
