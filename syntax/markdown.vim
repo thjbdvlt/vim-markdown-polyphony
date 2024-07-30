@@ -94,9 +94,9 @@ syn region Italic
 
 " italic + string
 syn region ItalicString
-            \ start="\S\@<=_\|_\S\@=" 
+            \ start="\W\@<=_\w\@=\|^_\w\@="
             \ skip="\\_"
-            \ end="\S\@<=_\|_\S\@="  
+            \ end="\w\@<=_\W\@=\|_$"
             \ containedin=String
             \ contained
             \ contains=@NoSpell
@@ -104,9 +104,9 @@ syn region ItalicString
 
 " italic + string
 syn region ItalicParenthese
-            \ start="\S\@<=_\|_\S\@=" 
+            \ start="\W\@<=_\w\@=\|^_\w\@="
             \ skip="\\_"
-            \ end="\S\@<=_\|_\S\@="  
+            \ end="\w\@<=_\W\@=\|_$"
             \ containedin=Parenthese
             \ contains=@NoSpell
             \ contained
@@ -140,6 +140,7 @@ syn region BoldParenthese
 syn region Code
             \ start=/`/ skip=/\\`/ end=/`/
             \ contains=@NoSpell
+            \ containedin=ALLBUT,Code
 
 " inline code block: ```
 syn region Code
