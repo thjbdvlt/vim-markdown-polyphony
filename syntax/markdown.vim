@@ -69,7 +69,7 @@ syn region Paratext matchgroup=ParaMarker
 syn region Parenthese
             \ start="(" end=")"
             \ contains=String,Code
-            \ containedin=ALLBUT,Code
+            \ containedin=ALLBUT,Comment,Code
 
 " url (or file path) in link like this: [magic place](magic url)
 syn region Url matchgroup=Paratext 
@@ -140,7 +140,7 @@ syn region BoldParenthese
 syn region Code
             \ start=/`/ skip=/\\`/ end=/`/
             \ contains=@NoSpell
-            \ containedin=ALLBUT,Code
+            \ containedin=ALLBUT,Code,Comment
 
 " inline code block: ```
 syn region Code
