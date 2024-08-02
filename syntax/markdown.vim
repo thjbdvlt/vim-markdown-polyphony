@@ -49,7 +49,7 @@ syn region String start=/“/ skip=/\\”/ end=/”/
             \ keepend
 
 " block quote
-syn region String start="^> " end="$"
+syn region String start="^> " end="\n\n"
             \ contains=Parenthese,ItalicString
             \ keepend
 
