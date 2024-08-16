@@ -65,6 +65,9 @@ syn region Paratext matchgroup=ParaMarker
             \ contains=CONTAINED
             \ keepend
 
+" horizontal bar with ---
+syn match ParaMarker '^---$'
+
 " parentheses
 syn region Parenthese
             \ start="(" end=")"
