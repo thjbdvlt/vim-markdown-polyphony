@@ -90,16 +90,16 @@ syn region Italic
 
 " italic with _
 syn region Italic
-            \ start="\W\@<=_\w\@=\|^_\w\@="
+            \ start="\W\@<=_\w\@=\|^_\w\@=\|\W\@<=_\W\@="
             \ skip="\\_"
-            \ end="\w\@<=_\W\@=\|_$"
+            \ end="\w\@<=_\W\@=\|_$\|\W\@<=_\W\@="
             \ contains=@NoSpell
 
 " italic + string
 syn region ItalicString
-            \ start="\W\@<=_\w\@=\|^_\w\@="
+            \ start="\W\@<=_\w\@=\|^_\w\@=\|\W\@<=_\W\@="
             \ skip="\\_"
-            \ end="\w\@<=_\W\@=\|_$"
+            \ end="\w\@<=_\W\@=\|_$\|\W\@<=_\W\@="
             \ containedin=String
             \ contained
             \ contains=@NoSpell
@@ -107,9 +107,9 @@ syn region ItalicString
 
 " italic + string
 syn region ItalicParenthese
-            \ start="\W\@<=_\w\@=\|^_\w\@="
+            \ start="\W\@<=_\w\@=\|^_\w\@=\|\W\@<=_\W\@="
             \ skip="\\_"
-            \ end="\w\@<=_\W\@=\|_$"
+            \ end="\w\@<=_\W\@=\|_$\|\W\@<=_\W\@="
             \ containedin=Parenthese
             \ contains=@NoSpell
             \ contained
