@@ -150,15 +150,21 @@ syn region Code
             \ start=/^```/ end=/```/
             \ contains=@NoSpell
 
+" yaml frontmatter
 syn region YamlFrontMatter
             \ matchgroup=Statement
             \ start=/\%1l^---$/ end=/^---$/
             \ contains=@NoSpell
 
+" keys (fields) in the yaml frontmatter
 syn match YamlKey "^[^: ]\+:" containedin=YamlFrontMatter contained contains=@NoSpell
 
-" les listes
+" lists
 syn match ListItem "^\s*\- \|^\d\."
+
+" defintion list
+syn match Concept "^\w[^\n]\+\(\n:\)\@="
+syn match Definition "\(\n:\)\@<=[^\n]\+"
 
 " headings
 syn match Title "^.\+\n-\+$" contains=TitleMarker
@@ -169,6 +175,9 @@ syn match TitleMarker "^#\+" contained
 
 "  links to highlight groups
 hi default Italic cterm=italic
+hi default Bold cterm=bold
+hi default Concept cterm=underline
+hi default link Definition Function
 hi default link CitationKey Underlined
 hi default link Date        Statement
 hi default link Url         Underlined
