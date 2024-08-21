@@ -50,7 +50,7 @@ syn region String start=/“/ skip=/\\”/ end=/”/
 
 " block quote
 syn region String start="^> " end="\n\n"
-            \ contains=Parenthese,ItalicString
+            \ contains=ItalicString
             \ keepend
 
 " [@becker2020], [^1]: ..., [cool thing](./some/path), etc.
@@ -72,7 +72,7 @@ syn match ParaMarker '^---$'
 syn region Parenthese
             \ start="(" end=")"
             \ contains=String,Code
-            \ containedin=ALLBUT,Comment,Code
+            \ containedin=ALLBUT,Comment,Code,String
 
 " url (or file path) in link like this: [magic place](magic url)
 syn region Url matchgroup=Paratext 
