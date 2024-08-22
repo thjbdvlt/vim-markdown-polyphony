@@ -147,7 +147,7 @@ syn region Code
 
 " inline code block: ```
 syn region Code
-            \ start=/^```/ end=/```/
+            \ start=/^```/ end=/^```$/
             \ contains=@NoSpell
 
 " yaml frontmatter
@@ -163,8 +163,8 @@ syn match YamlKey "^[^: ]\+:" containedin=YamlFrontMatter contained contains=@No
 syn match ListItem "^\s*\- \|^\d\."
 
 " defintion list
-syn match Concept "^\w[^\n]\+\(\n:\)\@="
-syn match Definition "\(\n:\)\@<=[^\n]\+"
+syn match Concept "[^\n]\+\n\n\?:\@="
+syn region Definition start=/^:/ end=/$/
 
 " headings
 syn match Title "^.\+\n-\+$" contains=TitleMarker
