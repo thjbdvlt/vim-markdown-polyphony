@@ -51,3 +51,8 @@ install
 -------
 
 just like any other vim plugin, or append the content of the syntax file to `syntax/markdown.vim`
+
+note
+----
+
+if you have treesitter installed, you have to ensure that "markdown" is disabled (or not installed).
