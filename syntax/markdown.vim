@@ -173,6 +173,10 @@ syn match Title "^#\+ .*" contains=TitleMarker
 syn match TitleMarker "^[=-]\+$" contained
 syn match TitleMarker "^#\+" contained
 
+" html tag (minimal syntax)
+syn region HtmlTag start=/</ end=/>/ contains=@NoSpell
+syn region HtmlString start=/"/ end=/"/ containedin=HtmlTag contains=@NoSpell
+
 "  links to highlight groups
 hi default Italic cterm=italic
 hi default Bold cterm=bold
@@ -190,5 +194,7 @@ hi default link TitleMarker Statement
 hi default link ListItem Statement
 hi default link YamlFrontMatter Function
 hi default link YamlKey Statement
+hi default link HtmlTag Statement
+hi default link HtmlString Paratext
 
 let b:current_syntax = "markdown"
