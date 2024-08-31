@@ -174,7 +174,7 @@ syn match TitleMarker "^[=-]\+$" contained
 syn match TitleMarker "^#\+" contained
 
 " html tag (minimal syntax)
-syn region HtmlTag start=/</ end=/>/ contains=@NoSpell
+syn region HtmlTag start=/<[^!]/ end=/>/ contains=@NoSpell
 syn region HtmlString start=/"/ end=/"/ containedin=HtmlTag contains=@NoSpell
 
 "  links to highlight groups
