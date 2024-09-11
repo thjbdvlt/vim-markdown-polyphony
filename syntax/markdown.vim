@@ -139,16 +139,16 @@ syn region BoldParenthese
             \ contained
             \ keepend
 
-" inline code: `
-syn region Code
-            \ start=/[^`]`[^`]\|^`[^`]/ skip=/\\`/ end=/[^`]`[^`]\|`$/
-            \ contains=@NoSpell
-            \ containedin=ALLBUT,Code,Comment
-
-" inline code block: ```
+" code block: ```
 syn region Code
             \ start=/^```[a-z]/ end=/^```$/
             \ contains=@NoSpell
+
+" inline code: `
+syn region Code
+            \ start=/[^`]\@<=`\|^`/ skip=/\\`/ end=/`[^`]\@=\|`$/
+            \ contains=@NoSpell
+            \ containedin=ALLBUT,Code,Comment
 
 " yaml frontmatter
 syn region YamlFrontMatter
@@ -160,7 +160,7 @@ syn region YamlFrontMatter
 syn match YamlKey "^[^: ]\+:" containedin=YamlFrontMatter contained contains=@NoSpell
 
 " lists
-syn match ListItem "^\s*\- \|^\d\."
+syn match ListItem "^\s*\- \|^\d\+\."
 
 " defintion list
 syn match Concept "[^\n]\+\n\n\?:\@="
