@@ -139,16 +139,16 @@ syn region BoldParenthese
             \ contained
             \ keepend
 
-" code block: ```
-syn region Code
-            \ start=/^```[a-z]/ end=/^```$/
-            \ contains=@NoSpell
-
 " inline code: `
 syn region Code
             \ start=/[^`]\@<=`\|^`/ skip=/\\`/ end=/`[^`]\@=\|`$/
             \ contains=@NoSpell
             \ containedin=ALLBUT,Code,Comment
+
+" code block: ```
+syn region Code
+            \ start=/^```[a-z]/ end=/^```$/
+            \ contains=@NoSpell
 
 " yaml frontmatter
 syn region YamlFrontMatter
