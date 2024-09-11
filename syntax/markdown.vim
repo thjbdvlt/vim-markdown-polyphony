@@ -146,7 +146,7 @@ syn region Code
             \ containedin=ALLBUT,Code,Comment
 
 " inline code block: ```
-syn region BlockCode
+syn region Code
             \ start=/^```[a-z]/ end=/^```$/
             \ contains=@NoSpell
 
@@ -191,7 +191,6 @@ hi default link Parenthese  Function
 hi default link Paratext    Constant
 hi default link ParaMarker  Statement
 hi default link Footnote    Paratext
-hi default link BlockCode Code
 hi default link Code Type
 hi default link TitleMarker Statement
 hi default link ListItem Statement
