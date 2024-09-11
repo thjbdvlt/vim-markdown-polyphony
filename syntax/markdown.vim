@@ -141,13 +141,13 @@ syn region BoldParenthese
 
 " inline code: `
 syn region Code
-            \ start=/`/ skip=/\\`/ end=/`/
+            \ start=/[^`]`[^`]\|^`[^`]/ skip=/\\`/ end=/[^`]`[^`]\|`$/
             \ contains=@NoSpell
             \ containedin=ALLBUT,Code,Comment
 
 " inline code block: ```
-syn region Code
-            \ start=/^```/ end=/^```$/
+syn region BlockCode
+            \ start=/^```[a-z]/ end=/^```$/
             \ contains=@NoSpell
 
 " yaml frontmatter
@@ -175,12 +175,14 @@ syn match TitleMarker "^#\+" contained
 
 " html tag (minimal syntax)
 syn region HtmlTag start=/<[^!]/ end=/>/ contains=@NoSpell
-syn region HtmlString start=/"/ end=/"/ containedin=HtmlTag contains=@NoSpell
+syn region HtmlString start=/"/ end=/"/ containedin=HtmlTag contains=@NoSpell contained
 
-"  links to highlight groups
+" some highlights
 hi default Italic cterm=italic
 hi default Bold cterm=bold
 hi default Concept cterm=underline
+
+"  links to highlight groups
 hi default link Definition Function
 hi default link CitationKey Underlined
 hi default link Date        Statement
@@ -189,6 +191,7 @@ hi default link Parenthese  Function
 hi default link Paratext    Constant
 hi default link ParaMarker  Statement
 hi default link Footnote    Paratext
+hi default link BlockCode Code
 hi default link Code Type
 hi default link TitleMarker Statement
 hi default link ListItem Statement
