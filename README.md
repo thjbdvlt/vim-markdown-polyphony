@@ -1,4 +1,4 @@
-markdown syntax for vim:
+markdown syntax for vim, with additional highlights for academic writings:
 
 - quotes (inline quote and block quote)
 - comments with `,,`
@@ -52,7 +52,7 @@ install
 
 just like any other vim plugin, or append the content of the syntax file to `syntax/markdown.vim`
 
-note
-----
+treesitter
+----------
 
 if you have treesitter installed, you have to ensure that "markdown" is disabled (or not installed).
