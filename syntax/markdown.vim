@@ -72,7 +72,7 @@ syn match ParaMarker '^---$'
 syn region Parenthese
             \ start="(" end=")"
             \ contains=String,Code
-            \ containedin=ALLBUT,Comment,Code,String
+            \ containedin=ALLBUT,Comment,Code,String,Title
 
 " url (or file path) in link like this: [magic place](magic url)
 syn region Url matchgroup=Paratext 
@@ -160,7 +160,7 @@ syn region YamlFrontMatter
 syn match YamlKey "^[^: ]\+:" containedin=YamlFrontMatter contained contains=@NoSpell
 
 " lists
-syn match ListItem "^\s*\- \|^\d\+\."
+syn match ListItem "^\s*\- \|^\s*\d\+\."
 
 " defintion list
 syn match Concept "[^\n]\+\n\n\?:\@="
@@ -175,7 +175,8 @@ syn match TitleMarker "^#\+" contained
 
 " html tag (minimal syntax)
 syn region HtmlTag start=/<[^!]/ end=/>/ contains=@NoSpell
-syn region HtmlString start=/"/ end=/"/ containedin=HtmlTag contains=@NoSpell contained
+syn region HtmlString start=/"/ end=/"/ 
+            \ containedin=HtmlTag contains=@NoSpell contained
 
 " some highlights
 hi default Italic cterm=italic
