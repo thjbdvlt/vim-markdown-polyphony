@@ -81,6 +81,12 @@ syn region Url matchgroup=Paratext
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
             \ keepend
 
+
+syn match Url "https\?://\S\+"
+            \ contains=@NoSpell
+            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter,URL
+            \ keepend
+
 " italic with *
 syn region Italic
             \ start="\S\@<=\*\|\*\S\@=" 

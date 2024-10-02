@@ -31,7 +31,7 @@ html comments are much too long, sometimes even longer than the comment itself:
 ...as B. shows <!--says?--> in _Art worlds_...
 ```
 
-that's why i added a shorter and easier-to-write syntax. i never use double commas in my text and commas are very accessible in many keyboards so it seems to be a good option.
+that's why i added a shorter and easier-to-write syntax. i never use double commas in my text and commas are very accessible in many keyboards so it seems to be a good option. (i did not want to use `//` becaus i often use this in my notes.)
 
 to run the lua filter, just run `pandoc` with `-L` option:
 
