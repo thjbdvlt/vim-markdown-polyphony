@@ -53,17 +53,27 @@ syn region String start="^>.*" end="\n\n"
             \ contains=ItalicString
             \ keepend
 
-" [@becker2020], [^1]: ..., [cool thing](./some/path), etc.
+" " [@becker2020], [^1]: ..., [cool thing](./some/path), etc.
+" syn region Paratext matchgroup=ParaMarker
+"             \ start="\[" skip="\\\]" end="\]"
+"             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
+"             \ keepend
+
 syn region Paratext matchgroup=ParaMarker
-            \ start="\[" skip="\\\]" end="\]"
+            \ start="\[@\@=" skip="\\\]" end="\]"
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
             \ keepend
 
 " [^1]: pretty footnote in a small font
 syn region Paratext matchgroup=ParaMarker
-            \ start="^\[^\w\+\]:" end="$"
+            \ start="^\[^\S\+\]:" end="$"
             \ contains=CONTAINED
             \ keepend
+
+" footnote call (in text)
+syn match ParaMarker "\[\^\S\+\]" 
+            \ contains=@NoSpell
+            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
 
 " horizontal bar with ---
 syn match ParaMarker '^---$'
@@ -200,7 +210,7 @@ hi default link Url         Underlined
 hi default link Parenthese  Function
 hi default link Paratext    Constant
 hi default link ParaMarker  Statement
-hi default link Footnote    Paratext
+hi default link Footnote    Operator
 hi default link Code Type
 hi default link TitleMarker Statement
 hi default link ListItem Statement
