@@ -49,7 +49,7 @@ syn region String start=/“/ skip=/\\”/ end=/”/
             \ keepend
 
 " block quote
-syn region String start="^> " end="\n\n"
+syn region String start="^>.*" end="\n\n"
             \ contains=ItalicString
             \ keepend
 
@@ -178,6 +178,9 @@ syn match Title "^.\+\n=\+$" contains=TitleMarker
 syn match Title "^#\+ .*" contains=TitleMarker
 syn match TitleMarker "^[=-]\+$" contained
 syn match TitleMarker "^#\+" contained
+
+" TODO
+syn match Todo "TODO" containedin=Comment contains=@NoSpell
 
 " html tag (minimal syntax)
 syn region HtmlTag start=/<[^!]/ end=/>/ contains=@NoSpell
