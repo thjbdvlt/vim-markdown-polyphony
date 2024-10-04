@@ -23,6 +23,7 @@ setl commentstring=\,,%s\,,
 " comment with ,,
 syn region Comment
             \ start=/,,/ end=/,,/
+            \ contains=@NoSpell
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
             \ keepend
 
@@ -163,7 +164,7 @@ syn region Code
 
 " code block: ```
 syn region Code
-            \ start=/^```[a-z]/ end=/^```$/
+            \ start=/^```\S\+/ end=/^```$/
             \ contains=@NoSpell
 
 " yaml frontmatter
