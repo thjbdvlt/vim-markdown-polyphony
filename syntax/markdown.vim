@@ -48,12 +48,6 @@ syn region String start="^>.*" end="\n\n"
             \ contains=ItalicString
             \ keepend
 
-" " [@becker2020], [^1]: ..., [cool thing](./some/path), etc.
-" syn region Paratext matchgroup=ParaMarker
-"             \ start="\[" skip="\\\]" end="\]"
-"             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
-"             \ keepend
-
 syn region Paratext matchgroup=ParaMarker
             \ start="\[@\@=" skip="\\\]" end="\]"
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
@@ -71,7 +65,7 @@ syn match ParaMarker "\[\^\S\+\]"
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
 
 " horizontal bar with ---
-syn match ParaMarker '^---$'
+syn match ParaMarker /^---$/
 
 " parentheses
 syn region Parenthese
@@ -81,11 +75,10 @@ syn region Parenthese
 
 " url (or file path) in link like this: [magic place](magic url)
 syn region Url matchgroup=Paratext 
-            \ start=/\]\@<=(/ end=/)/
+            \ start=/\[[^\[\]]\+\](/ end=/)/
             \ contains=@NoSpell
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
             \ keepend
-
 
 syn match Url "https\?://\S\+"
             \ contains=@NoSpell
