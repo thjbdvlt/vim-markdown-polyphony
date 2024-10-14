@@ -48,6 +48,7 @@ syn region String start="^>.*" end="\n\n"
             \ contains=ItalicString
             \ keepend
 
+" brackets when followed by citation key [@citkey2024]
 syn region Paratext matchgroup=ParaMarker
             \ start="\[@\@=" skip="\\\]" end="\]"
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
@@ -75,7 +76,7 @@ syn region Parenthese
 
 " url (or file path) in link like this: [magic place](magic url)
 syn region Url matchgroup=Paratext 
-            \ start=/\[[^\[\]]\+\](/ end=/)/
+            \ start=/!\?\[[^\[\]]*\](/ end=/)/
             \ contains=@NoSpell
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
             \ keepend
