@@ -36,7 +36,7 @@ that's why i added a shorter and easier-to-write syntax. i never use double comm
 to run the lua filter, just run `pandoc` with `-L` option:
 
 ```bash
-pandoc -L /path/to/luafilter/commacomment.lua \
+pandoc -L /path/to/luafilter/pandoc-comma-comment.lua \
     -i README.md -o README.pdf -f markdown -t pdf
 ```
 
