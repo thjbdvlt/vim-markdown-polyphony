@@ -1,13 +1,13 @@
 local function remove_comma_comment(s, iscomment)
-    local new = ""
-    local prev = ''
-    local cur = ''
-    for i=1, #s do
+    local new, prev, cur = '', '', ''
+    local len = #s
+    for i = 1, len do
         prev = cur
         cur = string.sub(s, i, i)
         if prev == ',' and cur == ',' then
             iscomment = not iscomment
-        elseif cur ~= ',' and iscomment ~= true then
+            new = '' -- TEST
+        elseif iscomment ~= true then
             new = new .. cur
         end
     end

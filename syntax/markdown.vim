@@ -39,9 +39,9 @@ syn match CitationKey "@[a-zÀ-ÿ0-9_]\+"
             \ contains=@NoSpell
 
 " inline quotes
-syn region String start=/"/ skip=/\\"/ end=/"/ keepend
-syn region String start=/«/ skip=/\\»/ end=/»/ keepend
-syn region String start=/“/ skip=/\\”/ end=/”/ keepend
+syn region String start=/"/ skip=/[^\\]\\"/ end=/"/ keepend
+syn region String start=/«/ skip=/[^\\]\\»/ end=/»/ keepend
+syn region String start=/“/ skip=/[^\\]\\”/ end=/”/ keepend
 
 " block quote
 syn region String start="^>.*" end="\n\n"
@@ -146,7 +146,7 @@ syn region BoldParenthese
 
 " inline code: `
 syn region Code
-            \ start=/[^`]\@<=`\|^`/ skip=/\\`/ end=/`[^`]\@=\|`$/
+            \ start=/[^`]\@<=`\|^`/ skip=/[^\\]\\`/ end=/`[^`]\@=\|`$/
             \ contains=@NoSpell
             \ containedin=ALLBUT,Code,Comment
 
