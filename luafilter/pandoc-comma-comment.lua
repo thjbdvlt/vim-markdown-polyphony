@@ -6,7 +6,7 @@ local function remove_comma_comment(s, iscomment)
         cur = string.sub(s, i, i)
         if prev == ',' and cur == ',' then
             iscomment = not iscomment
-            new = '' -- TEST
+            new = string.sub(new, 1, i-2)
         elseif iscomment ~= true then
             new = new .. cur
         end
