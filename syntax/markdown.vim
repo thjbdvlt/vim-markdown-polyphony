@@ -187,9 +187,9 @@ syn region HtmlString start=/"/ end=/"/
             \ containedin=HtmlTag contains=@NoSpell contained
 
 " some highlights
-hi default Italic cterm=italic
-hi default Bold cterm=bold
-hi default Concept cterm=underline
+hi default Italic cterm=italic gui=italic
+hi default Bold cterm=bold gui=bold
+hi default Concept cterm=underline gui=underline
 
 "  links to highlight groups
 hi default link Definition Function
