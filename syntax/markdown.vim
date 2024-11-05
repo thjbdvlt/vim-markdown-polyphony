@@ -72,7 +72,7 @@ syn match ParaMarker /^---$/
 syn region Parenthese
             \ start="(" end=")"
             \ contains=String,Code
-            \ containedin=ALLBUT,Comment,Code,String,Title
+            \ containedin=ALLBUT,Comment,Code,String,Title,ItalicString
 
 " url (or file path) in link like this: [magic place](magic url)
 syn region Url matchgroup=Paratext 
@@ -110,7 +110,17 @@ syn region ItalicString
             \ contains=@NoSpell
             \ keepend
 
-" italic + string
+" italic with *
+syn region Italic start="\*" skip="\\*" end="\*" 
+            \ contains=@NoSpell
+            \ keepend
+syn region ItalicString start="\*" skip="\\*" end="\*"
+            \ containedin=String
+            \ contained
+            \ contains=@NoSpell
+            \ keepend
+
+" italic + parenthese
 syn region ItalicParenthese
             \ start="\W\@<=_\w\@=\|^_\w\@=\|\W\@<=_\W\@="
             \ skip="\\_"
@@ -168,7 +178,7 @@ syn match YamlKey "^[^: ]\+:" containedin=YamlFrontMatter contained contains=@No
 syn match ListItem "^\s*\- \|^\s*\d\+\."
 
 " defintion list
-syn match Concept "[^\n]\+\n\n\?:\@="
+syn match Concept "[^\n]\+\n\n\?:\@=" contains=@NoSpell
 syn region Definition start=/^:/ end=/$/
 
 " headings
