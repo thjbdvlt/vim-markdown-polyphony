@@ -196,6 +196,18 @@ syn region HtmlTag start=/<[^!]/ end=/>/ contains=@NoSpell
 syn region HtmlString start=/"/ end=/"/ 
             \ containedin=HtmlTag contains=@NoSpell contained
 
+" [xiii]{.smallcaps}^e^
+syn region Superscript matchgroup=Statement
+            \ start=/\^/ end=/\^/
+            \ contains=@NoSpell
+            \ containedin=Normal
+            \ keepend
+
+syn match PandocClass "\[[^\[\]]*\]{.[a-z]\+}" 
+            \ contains=@NoSpell keepend
+syn match Normal "\[\@<=[a-z]\+\]\@=" 
+            \containedin=PandocClass keepend contained
+
 " some highlights
 hi default Italic cterm=italic gui=italic
 hi default Bold cterm=bold gui=bold
@@ -217,5 +229,6 @@ hi default link YamlFrontMatter Function
 hi default link YamlKey Statement
 hi default link HtmlTag Statement
 hi default link HtmlString Paratext
+hi default link PandocClass Statement
 
 let b:current_syntax = "markdown"
