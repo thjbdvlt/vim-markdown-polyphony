@@ -45,12 +45,12 @@ syn region String start=/“/ skip=/[^\\]\\”/ end=/”/ keepend
 
 " block quote
 syn region String start="^>.*" end="\n\n"
-            \ contains=ItalicString
+            \ contains=ItalicString,PandocClass
             \ keepend
 
 " brackets when followed by citation key [@citkey2024]
 syn region Paratext matchgroup=ParaMarker
-            \ start="\[@\@=" skip="\\\]" end="\]"
+            \ start="\[[^\[\]]*@\@=" skip="\\\]" end="\]"
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
             \ keepend
 
@@ -200,13 +200,14 @@ syn region HtmlString start=/"/ end=/"/
 syn region Superscript matchgroup=Statement
             \ start=/\^/ end=/\^/
             \ contains=@NoSpell
-            \ containedin=Normal
+            \ containedin=Normal,String,Paratext
             \ keepend
 
 syn match PandocClass "\[[^\[\]]*\]{.[a-z]\+}" 
             \ contains=@NoSpell keepend
+
 syn match Normal "\[\@<=[a-z]\+\]\@=" 
-            \containedin=PandocClass keepend contained
+            \ containedin=PandocClass keepend contained
 
 " some highlights
 hi default Italic cterm=italic gui=italic
