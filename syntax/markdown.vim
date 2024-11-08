@@ -43,7 +43,7 @@ syn match CitationKey "@[a-zÀ-ÿ0-9_]\+"
             \ contains=@NoSpell
 
 syn region CitationText start=/\[\@<=.\?/ end=/.\?\]\@=/ 
-            \ containedin=Citation
+            \ containedin=Citation contained
 
 " inline quotes
 syn region String start=/"/ skip=/[^\\]\\"/ end=/"/ keepend
@@ -65,7 +65,7 @@ syn region Footnote matchgroup=ParaMarker
             \ start="\^\[" end="\]"
 
 syn region FootnoteText start=/\[\@<=.\?/ end=/.\?\]\@=/ 
-            \ containedin=Footnote
+            \ containedin=Footnote contained
 
 " footnote call (in text)
 syn match ParaMarker "\[\^\S\+\]" 
