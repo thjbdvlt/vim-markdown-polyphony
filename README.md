@@ -8,7 +8,7 @@ markdown syntax for vim, with additional highlights for academic writings:
 
 (and basic markdown syntax: emphasis, strong, heading, code, definition list, html tags)
 
-the repository also contains a [pandoc lua filter](https://pandoc.org/lua-filters.html) to remove `,,` comments when exported with pandoc.
+the repository also contains a [pandoc lua filter](https://pandoc.org/lua-filters.html) to remove `,,` comments when exported with pandoc (it works quite badly).
 
 quotes and parentheses
 ----------------------
@@ -38,6 +38,12 @@ to run the lua filter, just run `pandoc` with `-L` option:
 ```bash
 pandoc -L /path/to/luafilter/pandoc-comma-comment.lua \
     -i README.md -o README.pdf -f markdown -t pdf
+```
+
+but for now, it's just better (if you can) to use `sed` to preprocess the files, e.g. like this:
+
+```bash
+sed -z 's/,,.*?,,//g' file1.md file2.md file3.md | pandoc -
 ```
 
 if you use [Comment.nvim](https://github.com/numToStr/Comment.nvim) plugin, adding following code will say Comment.nvim to use `,,` syntax for (un)commenting:

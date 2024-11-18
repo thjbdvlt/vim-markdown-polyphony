@@ -27,6 +27,11 @@ function Inlines(inlines)
         if s ~= nil then
             new, iscomment = remove_comma_comment(s, iscomment)
             inlines[n].text = new
+        else
+            local c = inlines[n].c
+            if c then
+                inlines[n] = Inlines(inlines[n])
+            end
         end
     end
     return inlines
