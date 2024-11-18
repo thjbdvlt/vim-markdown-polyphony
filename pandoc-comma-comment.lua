@@ -1,3 +1,7 @@
+-- pandoc-comma-comments.lua
+-- 
+-- remove comma comments: "A word ,,term?,, carry a sentence."
+
 local function remove_comma_comment(s, iscomment)
     local new, prev, cur = '', '', ''
     local len = #s
