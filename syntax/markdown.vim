@@ -46,7 +46,8 @@ syn region CitationText start=/\[\@<=.\?/ end=/.\?\]\@=/
             \ containedin=Citation contained
 
 " inline quotes
-syn region String start=/"/ skip=/[^\\]\\"/ end=/"/ keepend
+syn region String start=/"/ skip=/[^\\]\\"/ end=/"/ keepend 
+            \ containedin=FootnoteText
 syn region String start=/«/ skip=/[^\\]\\»/ end=/»/ keepend
 syn region String start=/“/ skip=/[^\\]\\”/ end=/”/ keepend
 
@@ -56,19 +57,21 @@ syn region String start="^>.*" end="\n\n"
             \ keepend
 
 " [^1]: pretty footnote in a small font
-syn region Footnote matchgroup=ParaMarker
-            \ start="^\[^\S\+\]:" end="$"
+syn region Paratext matchgroup=Footnote
+            \ start="^\[\^\S\+\]:" end="$"
             \ contains=CONTAINED
             \ keepend
 
 syn region Footnote matchgroup=ParaMarker
-            \ start="\^\[" end="\]"
+            \ start="\^\[" end="\]" 
+            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
+            \ keepend
 
 syn region FootnoteText start=/\[\@<=.\?/ end=/.\?\]\@=/ 
-            \ containedin=Footnote contained
+            \ containedin=Footnote contained keepend
 
 " footnote call (in text)
-syn match ParaMarker "\[\^\S\+\]" 
+syn match ParaMarker ".\@<=\[\^\S\+\]" 
             \ contains=@NoSpell
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
 
@@ -203,20 +206,20 @@ syn region HtmlTag start=/<[^!]/ end=/>/ contains=@NoSpell
 syn region HtmlString start=/"/ end=/"/ 
             \ containedin=HtmlTag contains=@NoSpell contained
 
+syn match PandocClass "\[[^\[\]]*\]{.[a-z]\+}" 
+            \ contains=@NoSpell keepend
+
 " [xiii]{.smallcaps}^e^
 syn match Superscript "\^[a-zÀ-ÿ0-9_]\+\^"
             \ contains=@NoSpell
             \ containedin=Normal,String,Paratext
             \ keepend
 
-syn match PandocClass "\[[^\[\]]*\]{.[a-z]\+}" 
-            \ contains=@NoSpell keepend
-
 syn match Normal "\[\@<=[a-z]\+\]\@=" 
             \ containedin=PandocClass keepend contained
 
-syn match Normal "[a-zÀ-ÿ0-9_]\+" 
-            \ containedin=Superscript keepend contained
+" syn match Normal "[a-zÀ-ÿ0-9_]\+" 
+"             \ containedin=Superscript keepend contained
 
 " some highlights
 hi default Italic cterm=italic gui=italic
