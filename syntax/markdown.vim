@@ -33,15 +33,13 @@ syn region Comment
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
             \ keepend
 
+" citations
 syn match Citation "\[[^\[\]]*@[^\[\]]*\]" 
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
             \ keepend
-
-" citation key: @becker2020
 syn match CitationKey "@[a-zÀ-ÿ0-9_]\+"
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
             \ contains=@NoSpell
-
 syn region CitationText start=/\[\@<=.\?/ end=/.\?\]\@=/ 
             \ containedin=Citation contained
 
@@ -49,19 +47,20 @@ syn region CitationText start=/\[\@<=.\?/ end=/.\?\]\@=/
 syn region String start=/"/ skip=/[^\\]\\"/ end=/"/ keepend 
             \ containedin=FootnoteText
 syn region String start=/«/ skip=/[^\\]\\»/ end=/»/ keepend
+            \ containedin=FootnoteText
 syn region String start=/“/ skip=/[^\\]\\”/ end=/”/ keepend
+            \ containedin=FootnoteText
 
 " block quote
 syn region String start="^>.*" end="\n\n"
             \ contains=ItalicString,PandocClass
             \ keepend
 
-" [^1]: pretty footnote in a small font
-syn region Paratext matchgroup=Footnote
+" Footnotes
+syn region Footnote matchgroup=Footnote
             \ start="^\[\^\S\+\]:" end="$"
             \ contains=CONTAINED
             \ keepend
-
 syn region Footnote matchgroup=ParaMarker
             \ start="\^\[" end="\]" 
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
@@ -124,6 +123,7 @@ syn region ItalicString
 syn region Italic start="\*" skip="\\*" end="\*" 
             \ contains=@NoSpell
             \ keepend
+
 syn region ItalicString start="\*" skip="\\*" end="\*"
             \ containedin=String
             \ contained
@@ -217,9 +217,6 @@ syn match Superscript "\^[a-zÀ-ÿ0-9_]\+\^"
 
 syn match Normal "\[\@<=[a-z]\+\]\@=" 
             \ containedin=PandocClass keepend contained
-
-" syn match Normal "[a-zÀ-ÿ0-9_]\+" 
-"             \ containedin=Superscript keepend contained
 
 " some highlights
 hi default Italic cterm=italic gui=italic
