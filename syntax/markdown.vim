@@ -18,11 +18,11 @@
 "  - italic + bold
 
 " comment with ,,
-setl commentstring=\,,%s\,,
+setl commentstring=\,,%s
 
 " comment with ,,
 syn region Comment
-            \ start=/,,/ end=/,,/
+            \ start=/,,/ end=/$/
             \ contains=@NoSpell
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
             \ keepend

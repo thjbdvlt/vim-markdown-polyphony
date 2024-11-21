@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# remove comma comments
+
+for i in "$@"
+do
+    grep --invert-match '^,,' "$i"
+    echo
+    echo
+done | sed 's/,,.*$//'

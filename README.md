@@ -8,7 +8,7 @@ markdown syntax for vim, with additional highlights for academic writings:
 
 (and basic markdown syntax: emphasis, strong, heading, code, definition list, html tags)
 
-the repository also contains a [pandoc lua filter](https://pandoc.org/lua-filters.html) to remove `,,` comments when exported with pandoc (it works quite badly).
+the repository also contains a simple bash script to remove `,,` comments when exported with pandoc.
 
 quotes and parentheses
 ----------------------
@@ -23,8 +23,6 @@ that's the same logic for parentheses: _syntax highlights_ is supposed to make m
 comma comments
 --------------
 
-![comments with `,,`](./img/vim.png)
-
 html comments are much too long, sometimes even longer than the comment itself:
 
 ```markdown
@@ -33,24 +31,17 @@ html comments are much too long, sometimes even longer than the comment itself:
 
 that's why i added a shorter and easier-to-write syntax. i never use double commas in my text and commas are very accessible in many keyboards so it seems to be a good option. (i did not want to use `//` becaus i often use this in my notes.)
 
-to run the lua filter, just run `pandoc` with `-L` option:
+the bash script is meant to be used as a preprocessing tool:
 
 ```bash
-pandoc -L /path/to/luafilter/pandoc-comma-comment.lua \
-    -i README.md -o README.pdf -f markdown -t pdf
-```
-
-but for now, it's just better (if you can) to use `sed` to preprocess the files, e.g. like this:
-
-```bash
-sed -z 's/,,.*?,,//g' file1.md file2.md file3.md | pandoc -
+./uncomma *.md | pandoc -
 ```
 
 if you use [Comment.nvim](https://github.com/numToStr/Comment.nvim) plugin, adding following code will say Comment.nvim to use `,,` syntax for (un)commenting:
 
 ```lua
 local ft = require('Comment.ft')
-ft.set('markdown', {',,%s,,', ',,%s,,'})
+ft.set('markdown', {',,%s'})
 ```
 
 install
