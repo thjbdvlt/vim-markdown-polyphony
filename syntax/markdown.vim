@@ -185,7 +185,7 @@ syn region YamlFrontMatter
 syn match YamlKey "^[^: ]\+:" containedin=YamlFrontMatter contained contains=@NoSpell
 
 " lists
-syn match ListItem "^\s*\- \|^\s*\d\+\."
+syn match ListItem "^\s*[\-\+\*] \|^\s*\d\+\."
 
 " defintion list
 syn match Concept "[^\n]\+\n\n\?:\@=" contains=@NoSpell
