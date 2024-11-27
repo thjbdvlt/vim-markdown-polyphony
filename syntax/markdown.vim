@@ -33,6 +33,10 @@ syn match CommentTodo "^\.\.\.$"
 syn match CommentWarning "^\!\!.*$" 
             \ containedin=ALL contains=@NoSpell
 
+" TODO conventionnel dans les commentaires.
+syn match Todo "TODO" containedin=Comment contains=@NoSpell
+
+
 " html comments
 syn region Comment
             \ start=/<!--/ end=/-->/
@@ -197,9 +201,6 @@ syn match Title "^.\+\n=\+$" contains=TitleMarker
 syn match Title "^#\+ .*" contains=TitleMarker
 syn match TitleMarker "^[=-]\+$" contained
 syn match TitleMarker "^#\+" contained
-
-" TODO
-syn match Todo "TODO" containedin=Comment contains=@NoSpell
 
 " html tag (minimal syntax)
 syn match HtmlTag "<[a-z]\+>" contains=@NoSpell

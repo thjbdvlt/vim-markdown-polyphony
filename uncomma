@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# remove comma comments
+# remove comma comments and add double newlines between input files
 
 for i in "$@"
 do
