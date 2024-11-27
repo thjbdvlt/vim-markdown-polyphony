@@ -285,6 +285,7 @@ hi default link ClassName Struct
 hi default link TitleRule Struct
 hi default link ListItem Struct
 hi default link Example Struct
+hi default link Rule Struct
 
 hi default link Definition Constant
 
