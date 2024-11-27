@@ -47,7 +47,7 @@ syn region String
 
 " block quote
 syn region String start="^>.*" end="\n\n"
-            \ contains=ItalicString,Class
+            \ contains=EmphasisString,Class
             \ keepend
 
 " citations (pandoc citeproc)
@@ -57,7 +57,7 @@ syn match Citation
             \ keepend
 syn match CitationKey
             \ "@[a-zÀ-ÿ0-9_]\+"
-            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
+            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter,Example
             \ contains=@NoSpell
 syn region CitationText
             \ start=/\[\@<=.\?/ end=/.\?\]\@=/
@@ -91,38 +91,42 @@ syn match Rule /^---$/
 syn region Parenthese
             \ start="(" end=")"
             \ contains=String,Code
-            \ containedin=ALLBUT,Comment,Code,String,Title,ItalicString,_Url
+            \ containedin=ALLBUT,Comment,Code,String,Title,EmphasisString,_Url,Example
 
+" example list
+syn match Example /(@[a-z]*)/ contains=@NoSpell
+            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
+
+" url and hypertext
 syn match _Url /\[[^\]]\+\]([^)]\+)/ keepend
 syn region Hypertext
             \ matchgroup=Struct start=/\[/ end=/\]/ 
             \ containedin=_Url contained
-
 syn region Url
             \ matchgroup=Struct start=/(/ end=/)/ 
             \ containedin=_Url contained
-
 syn match Hypertext "<\?https\?://\S\+"
             \ contains=@NoSpell
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter,URL
             \ keepend
 
+" file paths
 syn match Filepath
             \ "\.\+\(/[a-zÀ-ÿ0-9_]\+\(\.[a-zA-Z0-9]\+\)\?\)\+/\?"
             \ contains=@NoSpell
 
-" italic
-syn region Italic
+" Emphasis
+syn region Emphasis
             \ start="\W\@<=_\w\@=\|^_\w\@=\|\W\@<=_\W\@="
             \ skip="\\_"
             \ end="\w\@<=_\W\@=\|_$\|\W\@<=_\W\@="
             \ contains=@NoSpell
-syn region Italic
+syn region Emphasis
             \ start="\*" skip="\\\*" end="\*"
             \ contains=@NoSpell
 
-" italic + string
-syn region ItalicString
+" Emphasis + string
+syn region EmphasisString
             \ start="\W\@<=_\w\@=\|^_\w\@=\|\W\@<=_\W\@="
             \ skip="\\_"
             \ end="\w\@<=_\W\@=\|_$\|\W\@<=_\W\@="
@@ -130,15 +134,15 @@ syn region ItalicString
             \ contained
             \ contains=@NoSpell
             \ keepend
-syn region ItalicString
+syn region EmphasisString
             \ start="\*" skip="\\*" end="\*"
             \ containedin=String
             \ contained
             \ contains=@NoSpell
             \ keepend
 
-" italic + parenthese
-syn region ItalicParenthese
+" Emphasis + parenthese
+syn region EmphasisParenthese
             \ start="\W\@<=_\w\@=\|^_\w\@=\|\W\@<=_\W\@="
             \ skip="\\_"
             \ end="\w\@<=_\W\@=\|_$\|\W\@<=_\W\@="
@@ -147,13 +151,13 @@ syn region ItalicParenthese
             \ contained
             \ keepend
 
-" Strong
+" strong
 syn region Strong
             \ start="\S\@<=__\|__\S\@="
             \ skip="\\__"
             \ end="\S\@<=__\|__\S\@="
 
-" Strong + string
+" strong + string
 syn region StrongString
             \ start="\S\@<=__\|__\S\@="
             \ skip="\\__"
@@ -162,7 +166,7 @@ syn region StrongString
             \ contained
             \ keepend
 
-" Strong + parenthese
+" strong + parenthese
 syn region StrongParenthese
             \ start="\S\@<=__\|__\S\@="
             \ skip="\\__"
@@ -202,39 +206,43 @@ syn match ListItem "^\s*[\-\+\*] \|^\s*\d\+\."
 syn match Concept "[^\n]\+\n\n\?:\@=" contains=@NoSpell
 syn region Definition start=/^:/ end=/$/
 
-" Titles
+" titles
 syn match Title /^.\+\n-\+$/ contains=TitleRule
 syn match Title /^.\+\n=\+$/ contains=TitleRule
 syn match Title /^#\+ .*/ contains=TitleRule
 syn match TitleRule /^[=-]\+$/ contained
 syn match TitleRule /^#\+/ contained
 
-" Class: [xiii]{.smallcaps}
+" class: [xiii]{.smallcaps}
 " TODO: do this somehow else
-syn match Class "\[[^\[\]]*\]{.[a-z]\+}"
+syn match _Class
+            \ /\[[^\[\]]*\]{\.[a-z]\+}/
             \ contains=@NoSpell keepend
+syn region ClassText matchgroup=_Class start=/\[/ end=/\]/
+            \ containedin=_Class keepend contained
+syn region ClassName matchgroup=_Class start=/{\./ end=/}/
+            \ containedin=_Class keepend contained contains=@NoSpell
 
-" Normal text in Class
-syn match Normal "\[\@<=[a-z]\+\]\@="
-            \ containedin=Class keepend contained
-
-" Superscript: 42^ème^
-syn match Super "\^[a-zÀ-ÿ0-9_]\+\^"
+" superscript: 42^ème^
+syn match Super
+            \ /\^[a-zÀ-ÿ0-9_]\+\^/
             \ contains=@NoSpell
             \ containedin=Normal,String,FootnoteText
             \ keepend
-
-syn match SuperSign /\^/ contained containedin=Super
+syn match SuperSign 
+            \ /\^/ contained containedin=Super
 
 " html (comments, tags, attributes, attribute values)
-syn region htmlComment
+syn region Comment
             \ start=/<!--/ end=/-->/
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
             \ keepend
 " html tag
-syn match htmlTag "<[a-z]\+\( [^>]\+\)*/\?>"
+syn match htmlTag
+            \ "<[a-z]\+\( [^>]\+\)*/\?>"
             \ contains=@NoSpell,htmlAttr keepend
-syn match htmlTag "</[a-z]\+>"
+syn match htmlTag
+            \ "</[a-z]\+>"
             \ contains=@NoSpell,htmlAttr keepend
 
 " html attribute
@@ -251,7 +259,7 @@ syn region htmlAttrVal
             \ containedin=htmlAttr contains=@NoSpell contained
 
 " i define a few specific highlights by default
-hi default Italic cterm=italic gui=italic
+hi default Emphasis cterm=italic gui=italic
 hi default Strong cterm=bold gui=bold
 hi default Concept cterm=underline gui=underline
 
@@ -271,9 +279,12 @@ hi default link FootnoteText Constant
 
 hi default link Super Constant
 hi default link SuperSign Struct
-hi default link Class Struct
+hi default link _Class Struct
+hi default link ClassText Strong
+hi default link ClassName Struct
 hi default link TitleRule Struct
 hi default link ListItem Struct
+hi default link Example Struct
 
 hi default link Definition Constant
 

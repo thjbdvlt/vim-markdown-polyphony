@@ -2,7 +2,7 @@
 
 # remove comma comments and add double newlines between input files
 
-pattern_start='^ *(,,|!!)'
+pattern_start='^ *(,,|!!|\.\.\.)'
 
 sub_inline='s/,,.*$//'
 
