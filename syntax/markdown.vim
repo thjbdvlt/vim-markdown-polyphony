@@ -25,12 +25,12 @@ syn region Comment
 
 " commentaires supplémentaires, en début de ligne
 syn region Comment
-            \ matchgroup=Missing start=/^ *\.\.\./
+            \ matchgroup=Missing start=/^ *\.\.\.\+/
             \ end=/$/
             \ containedin=ALL contains=@NoSpell
 
 syn region Comment
-            \ matchgroup=Warning start=/^ *\!\!/
+            \ matchgroup=Warning start=/^ *\!\!\+/
             \ end=/$/
             \ containedin=ALL contains=@NoSpell
 
@@ -258,6 +258,8 @@ hi default Concept cterm=underline gui=underline
 " the other groups are linked to existing groups
 hi default link Struct Statement
 hi default link Code Type
+hi default link Warning DiffText
+hi default link Missing DiffChange
 
 hi default link Citation Struct
 hi default link CitationText Constant
