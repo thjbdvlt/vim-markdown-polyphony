@@ -27,6 +27,12 @@ syn region Comment
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
             \ keepend
 
+" commentaires supplémentaires, en début de ligne
+syn match CommentTodo "^\.\.\.$" 
+            \ containedin=ALL contains=@NoSpell
+syn match CommentWarning "^\!\!.*$" 
+            \ containedin=ALL contains=@NoSpell
+
 " html comments
 syn region Comment
             \ start=/<!--/ end=/-->/
@@ -95,13 +101,6 @@ syn match Url "<\?https\?://\S\+"
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter,URL
             \ keepend
 
-" italic with *
-syn region Italic
-            \ start="\S\@<=\*\|\*\S\@=" 
-            \ skip="\\\*"
-            \ end="\S\@<=\*\|\*\S\@="  
-            \ contains=@NoSpell
-
 " italic with _
 syn region Italic
             \ start="\W\@<=_\w\@=\|^_\w\@=\|\W\@<=_\W\@="
@@ -120,10 +119,11 @@ syn region ItalicString
             \ keepend
 
 " italic with *
-syn region Italic start="\*" skip="\\*" end="\*" 
+syn region Italic
+            \ start="\*" 
+            \ skip="\\\*"  
+            \ end="\*"  
             \ contains=@NoSpell
-            \ keepend
-
 syn region ItalicString start="\*" skip="\\*" end="\*"
             \ containedin=String
             \ contained
