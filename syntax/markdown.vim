@@ -296,8 +296,8 @@ hi default link HtmlTag Struct
 hi default link HtmlAttr Struct
 hi default link htmlAttrVal Struct
 
-hi default link Hypertext Underlined
-hi default link Url Struct
+hi default link Hypertext Strong
+hi default link Url Underlined
 hi default link Filepath Underlined
 
 hi default link Parenthese Function
