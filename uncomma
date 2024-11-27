@@ -2,9 +2,14 @@
 
 # remove comma comments and add double newlines between input files
 
+pattern_start='^ *(,,|!!)'
+
+sub_inline='s/,,.*$//'
+
+# iterate over all positional arguments
 for i in "$@"
 do
-    grep --invert-match '^,,' "$i"
+    grep --invert-match "$pattern_start" "$i"
     echo
     echo
-done | sed 's/,,.*$//'
+done | sed "$sub_inline"
