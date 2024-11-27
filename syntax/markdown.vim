@@ -90,7 +90,7 @@ syn region Url matchgroup=Paratext
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
             \ keepend
 
-syn match Url "https\?://\S\+"
+syn match Url "<\?https\?://\S\+"
             \ contains=@NoSpell
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter,URL
             \ keepend
@@ -202,7 +202,10 @@ syn match TitleMarker "^#\+" contained
 syn match Todo "TODO" containedin=Comment contains=@NoSpell
 
 " html tag (minimal syntax)
-syn region HtmlTag start=/<[^!]/ end=/>/ contains=@NoSpell
+syn match HtmlTag "<[a-z]\+>" contains=@NoSpell
+syn match HtmlTag "<[a-z]\+ [^>]\+>" contains=@NoSpell
+syn match HtmlTag "</[a-z]\+>" contains=@NoSpell
+
 syn region HtmlString start=/"/ end=/"/ 
             \ containedin=HtmlTag contains=@NoSpell contained
 
