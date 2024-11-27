@@ -91,25 +91,34 @@ syn match Rule /^---$/
 syn region Parenthese
             \ start="(" end=")"
             \ contains=String,Code
-            \ containedin=ALLBUT,Comment,Code,String,Title,ItalicString
+            \ containedin=ALLBUT,Comment,Code,String,Title,ItalicString,_Url
 
-" url (or file path) in link like this: [magic place](magic url)
-syn region Url matchgroup=Paratext
-            \ start=/!\?\[[^\[\]]*\](/ end=/)/
-            \ contains=@NoSpell
-            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
-            \ keepend
+syn match _Url /\[[^\]]\+\]([^)]\+)/ keepend
+syn region Hypertext
+            \ matchgroup=Struct start=/\[/ end=/\]/ 
+            \ containedin=_Url contained
 
-syn match Url "<\?https\?://\S\+"
+syn region Url
+            \ matchgroup=Struct start=/(/ end=/)/ 
+            \ containedin=_Url contained
+
+syn match Hypertext "<\?https\?://\S\+"
             \ contains=@NoSpell
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter,URL
             \ keepend
 
-" italic with _
+syn match Filepath
+            \ "\.\+\(/[a-zÀ-ÿ0-9_]\+\(\.[a-zA-Z0-9]\+\)\?\)\+/\?"
+            \ contains=@NoSpell
+
+" italic
 syn region Italic
             \ start="\W\@<=_\w\@=\|^_\w\@=\|\W\@<=_\W\@="
             \ skip="\\_"
             \ end="\w\@<=_\W\@=\|_$\|\W\@<=_\W\@="
+            \ contains=@NoSpell
+syn region Italic
+            \ start="\*" skip="\\\*" end="\*"
             \ contains=@NoSpell
 
 " italic + string
@@ -121,14 +130,8 @@ syn region ItalicString
             \ contained
             \ contains=@NoSpell
             \ keepend
-
-" italic with *
-syn region Italic
-            \ start="\*"
-            \ skip="\\\*"
-            \ end="\*"
-            \ contains=@NoSpell
-syn region ItalicString start="\*" skip="\\*" end="\*"
+syn region ItalicString
+            \ start="\*" skip="\\*" end="\*"
             \ containedin=String
             \ contained
             \ contains=@NoSpell
@@ -144,14 +147,14 @@ syn region ItalicParenthese
             \ contained
             \ keepend
 
-" bold
-syn region Bold
+" Strong
+syn region Strong
             \ start="\S\@<=__\|__\S\@="
             \ skip="\\__"
             \ end="\S\@<=__\|__\S\@="
 
-" bold
-syn region BoldString
+" Strong + string
+syn region StrongString
             \ start="\S\@<=__\|__\S\@="
             \ skip="\\__"
             \ end="\S\@<=__\|__\S\@="
@@ -159,8 +162,8 @@ syn region BoldString
             \ contained
             \ keepend
 
-" bold
-syn region BoldParenthese
+" Strong + parenthese
+syn region StrongParenthese
             \ start="\S\@<=__\|__\S\@="
             \ skip="\\__"
             \ end="\S\@<=__\|__\S\@="
@@ -199,12 +202,12 @@ syn match ListItem "^\s*[\-\+\*] \|^\s*\d\+\."
 syn match Concept "[^\n]\+\n\n\?:\@=" contains=@NoSpell
 syn region Definition start=/^:/ end=/$/
 
-" headings
-syn match Heading "^.\+\n-\+$" contains=TitleMarker
-syn match Heading "^.\+\n=\+$" contains=TitleMarker
-syn match Heading "^#\+ .*" contains=TitleMarker
-syn match HeadingRule "^[=-]\+$" contained
-syn match HeadingRule "^#\+" contained
+" Titles
+syn match Title /^.\+\n-\+$/ contains=TitleRule
+syn match Title /^.\+\n=\+$/ contains=TitleRule
+syn match Title /^#\+ .*/ contains=TitleRule
+syn match TitleRule /^[=-]\+$/ contained
+syn match TitleRule /^#\+/ contained
 
 " Class: [xiii]{.smallcaps}
 " TODO: do this somehow else
@@ -218,8 +221,10 @@ syn match Normal "\[\@<=[a-z]\+\]\@="
 " Superscript: 42^ème^
 syn match Super "\^[a-zÀ-ÿ0-9_]\+\^"
             \ contains=@NoSpell
-            \ containedin=Normal,String,Paratext
+            \ containedin=Normal,String,FootnoteText
             \ keepend
+
+syn match SuperSign /\^/ contained containedin=Super
 
 " html (comments, tags, attributes, attribute values)
 syn region htmlComment
@@ -247,37 +252,40 @@ syn region htmlAttrVal
 
 " i define a few specific highlights by default
 hi default Italic cterm=italic gui=italic
-hi default Bold cterm=bold gui=bold
+hi default Strong cterm=bold gui=bold
 hi default Concept cterm=underline gui=underline
 
 " the other groups are linked to existing groups
 hi default link Struct Statement
+hi default link Code Type
 
-hi default link Citation    Struct
-hi default link CitationText Paratext
+hi default link Citation Struct
+hi default link CitationText Constant
 hi default link CitationKey Underlined
 
-hi default link Footnote    Struct
-hi default link FootnoteCall  Struct
+hi default link Footnote Struct
+hi default link FootnoteCall Struct
 hi default link FootnoteText Constant
 
-hi default link Code Type
-hi default link TitleMarker Struct
-hi default link ListItem Struct
-hi default link YamlFrontMatter Function
-hi default link YamlKey Struct
-
+hi default link Super Constant
+hi default link SuperSign Struct
 hi default link Class Struct
-hi default link Superscript Struct
+hi default link TitleRule Struct
+hi default link ListItem Struct
+
+hi default link Definition Constant
+
+hi default link YamlKey Struct
+hi default link YamlFrontMatter Constant
 
 hi default link HtmlTag Struct
-hi default link HtmlAttr Operator
-hi default link htmlAttrVal Error
+hi default link HtmlAttr Struct
+hi default link htmlAttrVal Struct
 
-hi default link Definition Function
-hi default link Url         Underlined
-hi default link Parenthese  Function
+hi default link Hypertext Underlined
+hi default link Url Struct
+hi default link Filepath Underlined
 
-" hi @comment.warning gui=italic guifg=red
+hi default link Parenthese Function
 
 let b:current_syntax = "markdown"
