@@ -25,28 +25,21 @@ syn region Comment
 
 " commentaires supplémentaires, en début de ligne
 syn region Comment
-            \ matchgroup=Missing start=/^ *\.\.\.\+/
-            \ end=/$/
+            \ matchgroup=Missing start=/^ *\.\.\.\+/ end=/$/
             \ containedin=ALL contains=@NoSpell
 
 syn region Comment
-            \ matchgroup=Warning start=/^ *\!\!\+/
-            \ end=/$/
+            \ matchgroup=Warning start=/^ *\!\!\+/ end=/$/
             \ containedin=ALL contains=@NoSpell
 
 " inline quotes
 syn region String
-            \ start=/"/ skip=/[^\\]\\"/ end=/"/ keepend
-            \ containedin=FootnoteText
-syn region String
-            \ start=/«/ skip=/[^\\]\\»/ end=/»/ keepend
-            \ containedin=FootnoteText
-syn region String
-            \ start=/“/ skip=/[^\\]\\”/ end=/”/ keepend
-            \ containedin=FootnoteText
+            \ start=/"/ skip=/[^\\]\\"/ end=/"/ 
+            \ keepend containedin=FootnoteText
 
 " block quote
-syn region String start="^>.*" end="\n\n"
+syn region String
+            \ start="^>.*" end="\n\n"
             \ contains=EmphasisString,Class
             \ keepend
 
@@ -60,7 +53,7 @@ syn match CitationKey
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter,Example
             \ contains=@NoSpell
 syn region CitationText
-            \ start=/\[\@<=.\?/ end=/.\?\]\@=/
+            \ start=/\[\@1<=.\?/ end=/.\?\]\@=/
             \ containedin=Citation contained
 
 " footnotes
@@ -90,7 +83,7 @@ syn match Rule /^---$/
 " parentheses
 syn region Parenthese
             \ start="(" end=")"
-            \ contains=String,Code
+            \ contains=String,Code,Emphasis
             \ containedin=ALLBUT,Comment,Code,String,Title,EmphasisString,_Url,Example
 
 " example list
@@ -121,59 +114,30 @@ syn region Emphasis
             \ skip="\\_"
             \ end="\w\@<=_\W\@=\|_$\|\W\@<=_\W\@="
             \ contains=@NoSpell
+
 syn region Emphasis
             \ start="\*" skip="\\\*" end="\*"
             \ contains=@NoSpell
 
-" Emphasis + string
+" Emphasis in other groups (only with '*')
 syn region EmphasisString
-            \ start="\W\@<=_\w\@=\|^_\w\@=\|\W\@<=_\W\@="
-            \ skip="\\_"
-            \ end="\w\@<=_\W\@=\|_$\|\W\@<=_\W\@="
-            \ containedin=String
-            \ contained
-            \ contains=@NoSpell
-            \ keepend
-syn region EmphasisString
-            \ start="\*" skip="\\*" end="\*"
-            \ containedin=String
-            \ contained
-            \ contains=@NoSpell
-            \ keepend
-
-" Emphasis + parenthese
+            \ start="\*" skip="\\\*" end="\*"
+            \ contains=@NoSpell containedin=String
 syn region EmphasisParenthese
-            \ start="\W\@<=_\w\@=\|^_\w\@=\|\W\@<=_\W\@="
-            \ skip="\\_"
-            \ end="\w\@<=_\W\@=\|_$\|\W\@<=_\W\@="
-            \ containedin=Parenthese
-            \ contains=@NoSpell
-            \ contained
-            \ keepend
+            \ start="\*" skip="\\\*" end="\*"
+            \ contains=@NoSpell containedin=Parenthese
+syn region EmphasisFootnoteText
+            \ start="\*" skip="\\\*" end="\*"
+            \ contains=@NoSpell containedin=FootnoteText
+syn region EmphasisTitle
+            \ start="\*" skip="\\\*" end="\*"
+            \ contains=@NoSpell containedin=Title
 
 " strong
 syn region Strong
             \ start="\S\@<=__\|__\S\@="
             \ skip="\\__"
             \ end="\S\@<=__\|__\S\@="
-
-" strong + string
-syn region StrongString
-            \ start="\S\@<=__\|__\S\@="
-            \ skip="\\__"
-            \ end="\S\@<=__\|__\S\@="
-            \ containedin=String
-            \ contained
-            \ keepend
-
-" strong + parenthese
-syn region StrongParenthese
-            \ start="\S\@<=__\|__\S\@="
-            \ skip="\\__"
-            \ end="\S\@<=__\|__\S\@="
-            \ containedin=Parenthese
-            \ contained
-            \ keepend
 
 " inline code: `
 syn region Code
@@ -301,5 +265,12 @@ hi default link Url Underlined
 hi default link Filepath Underlined
 
 hi default link Parenthese Function
+
+" emphasis contained in other groups are not in italic
+" but least they contains=@NoSpell and have the same color
+" as their container
+hi default link EmphasisString String
+hi default link EmphasisParenthese Parenthese
+hi default link EmphasisFootnoteText FootnoteText
 
 let b:current_syntax = "markdown"
