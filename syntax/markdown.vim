@@ -1,309 +1,202 @@
-" MarkDown PolyPhony
-" ==================
-"
-" pandoc markdown syntax plus some stuff:
-"
-"  - inline string
-"  - parentheses
-"  - inline comments with ,,
-"  - inline comments typed (TODO, Warning) with !! and ...
-"    (only at the beginning of a line).
-"
-" not all pandoc markdown is supported. but this is:
-"   - html comment, tag, attributes, attributes values.
-"   - classes
-
-" comment with ,,
-setl commentstring=\,,%s
+" markdown syntax. thjbdvlt (2024). License MIT
+" (Pandoc is used as a reference, but it's not fully supported.)
 
 " a cluster with stuff in which markdown isn't active
 syn cluster NoMD contains=Comment,Code,YamlFrontMatter
-
-" comment with ,,
-syn region Comment
-            \ start=/,,/ end=/$/
-            \ contains=@NoSpell
-            \ containedin=ALLBUT,@NoMD
-            \ keepend 
-
-" commentaires supplémentaires, en début de ligne
-syn region Comment
-            \ matchgroup=Missing start=/^ *\.\.\.\+/ end=/$/
-            \ containedin=ALLBUT,@NoMD contains=@NoSpell
-
-syn region Comment
-            \ matchgroup=Warning start=/^ *\!\!\+/ end=/$/
-            \ containedin=ABUT,@NoMDLL contains=@NoSpell,WarningSign
-
-" inline quotes
-syn region String
-            \ start=/"/ skip=/[^\\]\\"/ end=/"/ 
-            \ keepend containedin=FootnoteText
-
-" block quote
-syn region String
-            \ start="^>.*" end="\n\n"
-            \ contains=EmphasisString,Class
-            \ keepend
-
-" citations (pandoc citeproc)
+syn region String start="^>.*" end="\n\n" contains=EmphasisString,Class keepend
 syn match Citation
-            \ "\[[^\[\]]*@[^\[\]]*\]"
-            \ containedin=ALLBUT,@NoMD
-            \ keepend
+ \ "\[[^\[\]]*@[^\[\]]*\]"
+ \ containedin=ALLBUT,@NoMD
+ \ keepend
 syn match CitationKey
-            \ "@[a-zÀ-ÿ0-9_]\+"
-            \ containedin=ALLBUT,@NoMD,Example
-            \ contains=@NoSpell
-            \ conceal cchar=¶
+ \ "@[a-zÀ-ÿ0-9_]\+"
+ \ containedin=ALLBUT,@NoMD,Example
+ \ contains=@NoSpell
+ \ conceal cchar=¶
 syn region CitationText
-            \ start=/\[\@1<=.\?/ end=/.\?\]\@=/
-            \ containedin=Citation contained
-            \ conceal cchar=¶
-
-" footnotes
+ \ start=/\[\@1<=.\?/ end=/.\?\]\@=/
+ \ containedin=Citation contained
+ \ conceal cchar=¶
 syn match FootnoteCall
-            \ /.\@<=\[\^\S\+\]/ contains=@NoSpell
-            \ conceal cchar=¶
+ \ /.\@<=\[\^\S\+\]/ contains=@NoSpell
+ \ conceal cchar=¶
 syn region _Footnote
-            \ start=/^\[\^\S\+\]:/
-            \ end=/$/
+ \ start=/^\[\^\S\+\]:/
+ \ end=/$/
 syn match Footnote /^\[\^\S\+\]:/
-            \ containedin=_Footnote contained
-            \ contains=@NoSpell
-            \ conceal cchar=¶
+ \ containedin=_Footnote contained
+ \ contains=@NoSpell
+ \ conceal cchar=¶
 syn region FootnoteText
-            \ start=/:\@<=./ end=/$/
-            \ containedin=_Footnote contained
+ \ start=/:\@<=./ end=/$/
+ \ containedin=_Footnote contained
 syn region FootnoteText
-            \ matchgroup=Footnote start=/\^\[/
-            \ end=/\]/
-            \ containedin=ALLBUT,@NoMD
-            \ keepend
+ \ matchgroup=Footnote start=/\^\[/
+ \ end=/\]/
+ \ containedin=ALLBUT,@NoMD
+ \ keepend
 syn region FootnoteText
-            \ start=/\[\@<=.\?/ end=/.\?\]\@=/
-            \ contained keepend
-
-" horizontal bar with ---
-syn match Rule /^---$/
-
-" parentheses
-syn region Parenthese
-            \ start="(" end=")"
-            \ contains=String,Code,Emphasis
-            \ containedin=ALLBUT,@NoMD,_Url,Example
-            \ keepend
-
-" example list
-syn match Example /(@[a-z]*)/ contains=@NoSpell
-            \ containedin=ALLBUT,@NoMD
-
-" url and hypertext
-syn match _Url /\[[^\]]\+\]([^)]\+)/ keepend
+ \ start=/\[\@<=.\?/ end=/.\?\]\@=/
+ \ contained keepend
+syn match Rule
+ \ /^---$/
+syn match Struct
+ \ /|/
+syn match Example
+ \ /(@[a-z]*)/ contains=@NoSpell
+ \ containedin=ALLBUT,@NoMD
+syn match _Url
+ \ /\[[^\]]\+\]([^)]\+)/ keepend
 syn region Hypertext
-            \ matchgroup=Struct start=/\[/ end=/\]/ 
-            \ containedin=_Url contained
+ \ matchgroup=Struct start=/\[/ end=/\]/ 
+ \ containedin=_Url contained
 syn region Url
-            \ matchgroup=Struct start=/(/ end=/)/ 
-            \ containedin=_Url contained
-            \ conceal cchar=/
+ \ matchgroup=Struct start=/(/ end=/)/ 
+ \ containedin=_Url contained
+ \ conceal cchar=/
 syn match Url "<\?https\?://\S\+"
-            \ contains=@NoSpell
-            \ containedin=ALLBUT,@NoMD,URL
-            \ keepend
-
-" file paths
-syn match Filepath
-            \ "\.\+\(/[a-zÀ-ÿ0-9_]\+\(\.[a-zA-Z0-9]\+\)\?\)\+/\?"
-            \ contains=@NoSpell
-
-" Emphasis
+ \ contains=@NoSpell
+ \ containedin=ALLBUT,@NoMD,URL
+ \ keepend
 syn region Emphasis
-            \ start="\W\@<=_\w\@=\|^_\w\@=\|\W\@<=_\W\@="
-            \ skip="\\_"
-            \ end="\w\@<=_\W\@=\|_$\|\W\@<=_\W\@="
-            \ contains=@NoSpell
-
+ \ start=/\*/ skip=/\\\*/ end=/\*/
+ \ contains=@NoSpell keepend
 syn region Emphasis
-            \ start=/\*/ skip=/\\\*/ end=/\*/
-            \ contains=@NoSpell keepend
-
-" Emphasis in other groups (only with '*')
+ \ start="\W\@<=_\w\@=\|^_\w\@=\|\W\@<=_\W\@="
+ \ skip="\\_"
+ \ end="\w\@<=_\W\@=\|_$\|\W\@<=_\W\@="
+ \ contains=@NoSpell
 syn region EmphasisString
-            \ start="\*" skip="\\\*" end="\*"
-            \ contains=@NoSpell containedin=String
-            \ contained keepend
+ \ start="\*" skip="\\\*" end="\*"
+ \ contains=@NoSpell containedin=String
+ \ contained keepend
 syn region EmphasisParenthese
-            \ start="\*" skip="\\\*" end="\*"
-            \ contains=@NoSpell containedin=Parenthese
-            \ contained keepend
+ \ start="\*" skip="\\\*" end="\*"
+ \ contains=@NoSpell containedin=Parenthese
+ \ contained keepend
 syn region EmphasisFootnoteText
-            \ start="\*" skip="\\\*" end="\*"
-            \ contains=@NoSpell containedin=FootnoteText
-            \ contained keepend
+ \ start="\*" skip="\\\*" end="\*"
+ \ contains=@NoSpell containedin=FootnoteText
+ \ contained keepend
 syn region EmphasisTitle
-            \ start="\*" skip="\\\*" end="\*"
-            \ contains=@NoSpell containedin=Title
-            \ contained keepend
-
-" strong
+ \ start="\*" skip="\\\*" end="\*"
+ \ contains=@NoSpell containedin=Title
+ \ contained keepend
 syn region Strong
-            \ start="\S\@<=__\|__\S\@="
-            \ skip="\\__"
-            \ end="\S\@<=__\|__\S\@="
-
-" inline code: `
+ \ start="\S\@<=__\|__\S\@="
+ \ skip="\\__"
+ \ end="\S\@<=__\|__\S\@="
 syn region Code
-            \ matchgroup=CodeDelimiter
-            \ start=/`/
-            \ end=/`/
-            \ contains=@NoSpell
-            \ containedin=ALLBUT,Code,Comment
-
-" yaml frontmatter
+ \ matchgroup=CodeDelimiter
+ \ start=/`/
+ \ end=/`/
+ \ contains=@NoSpell
+ \ containedin=ALLBUT,Code,Comment
 syn region YamlFrontmatter
-            \ matchgroup=Struct
-            \ start=/\%1l^---$/ end=/^---$/
-            \ contains=@NoSpell
-
-" keys (fields) in the yaml frontmatter
+ \ matchgroup=Struct
+ \ start=/\%1l^---$/ end=/^---$/
+ \ contains=@NoSpell
 syn match YamlKey "^[^: ]\+:"
-            \ containedin=YamlFrontMatter
-            \ contained contains=@NoSpell
-
-" lists
+ \ containedin=YamlFrontMatter
+ \ contained contains=@NoSpell
 syn match ListItem "^\s*[\-\+\*] \|^\s*\d\+\."
-
-" defintion list
 syn match Concept "[^\n]\+\n\n\?:\@=" 
-            \ containedin=ALLBUT,@NoMD
+ \ containedin=ALLBUT,@NoMD
 syn region Definition start=/^:/ end=/$/ 
-            \ containedin=ALLBUT,@NoMD
-
-" code block: ```
+ \ containedin=ALLBUT,@NoMD
 syn region Code
-            \ matchgroup=CodeDelimiter
-            \ start=/^```\S\+/ end=/^```$/
-            \ contains=@NoSpell keepend
-
-" titles
+ \ matchgroup=CodeDelimiter
+ \ start=/^```\S\+/ end=/^```$/
+ \ contains=@NoSpell keepend
 syn match Title /^.\+\n-\+$/ contains=TitleRule
 syn match Title /^.\+\n=\+$/ contains=TitleRule
 syn match Title /^#\+ .*/ contains=TitleRule
 syn match TitleRule /^[=-]\+$/ contained
 syn match TitleRule /^#\+/ contained
-
-" fenced divs
 syn match FencedDiv /^:::.*$/ contains=@NoSpell containedin=NONE keepend
-
-" class: [xiii]{.smallcaps}
-" TODO: do this somehow else
 syn match _Class
-            \ /\[[^\[\]]*\]{\.[a-z]\+}/
-            \ contains=@NoSpell keepend
+ \ /\[[^\[\]]*\]{\.[a-z]\+}/
+ \ contains=@NoSpell keepend
 syn region ClassText matchgroup=_Class start=/\[/ end=/\]/
-            \ containedin=_Class keepend contained
+ \ containedin=_Class keepend contained
 syn region ClassName matchgroup=_Class start=/{\./ end=/}/
-            \ containedin=_Class keepend contained contains=@NoSpell
-            \ conceal cchar=|
-
-" subscrit and superscript: 42^ème^
+ \ containedin=_Class keepend contained contains=@NoSpell
+ \ conceal cchar=|
 syn region Super
-            \ matchgroup=SuperSign start=/\^\@=\S/ end=/\^/
-            \ contains=@NoSpell
-            \ containedin=Normal,String,FootnoteText
-            \ oneline keepend
+ \ matchgroup=SuperSign start=/\^\@=\S/ end=/\^/
+ \ contains=@NoSpell
+ \ containedin=Normal,String,FootnoteText
+ \ oneline keepend
 syn region Sub
-            \ matchgroup=SubSign start=/\~\@=\S/ end=/\~/
-            \ contains=@NoSpell
-            \ containedin=Normal,String,FootnoteText
-            \ oneline keepend
-
-syn match Struct /|/
+ \ matchgroup=SubSign start=/\~\@=\S/ end=/\~/
+ \ contains=@NoSpell
+ \ containedin=Normal,String,FootnoteText
+ \ oneline keepend
 syn region Mark
-            \ matchgroup=Struct start=/==/ end=/==/
-            \ containedin=ALLBUT,@NoMD
-
-" html (comments, tags, attributes, attribute values)
+ \ matchgroup=Struct start=/==/ end=/==/
+ \ containedin=ALLBUT,@NoMD
 syn region Comment
-            \ start=/<!--/ end=/-->/
-            \ containedin=ALLBUT,@NoMD
-            \ keepend
-" html tag
+ \ start=/<!--/ end=/-->/
+ \ containedin=ALLBUT,@NoMD
+ \ keepend
 syn match htmlTag
-            \ "<[a-z]\+\( [^>]\+\)*/\?>"
-            \ contains=@NoSpell,htmlAttr keepend
+ \ "<[a-z]\+\( [^>]\+\)*/\?>"
+ \ contains=@NoSpell,htmlAttr keepend
 syn match htmlTag
-            \ "</[a-z]\+>"
-            \ contains=@NoSpell,htmlAttr keepend
-
-" html attribute
+ \ "</[a-z]\+>"
+ \ contains=@NoSpell,htmlAttr keepend
 syn region htmlAttr
-            \ start=/ \@<=[a-z]\+=\"/
-            \ skip=/\\"/
-            \ end=/"/
-            \ containedin=htmlTag contained
-            \ contains=@NoSpell keepend
-
-" html attribute value
+ \ start=/ \@<=[a-z]\+=\"/
+ \ skip=/\\"/
+ \ end=/"/
+ \ containedin=htmlTag contained
+ \ contains=@NoSpell keepend
 syn region htmlAttrVal
-            \ start=/"/ skip=/\\"/ end=/"/
-            \ containedin=htmlAttr contains=@NoSpell contained
+ \ start=/"/ skip=/\\"/ end=/"/
+ \ containedin=htmlAttr contains=@NoSpell contained
 
 " i define a few specific highlights by default
-hi default Emphasis cterm=italic gui=italic
-hi default Strong cterm=bold gui=bold
-hi default Concept cterm=underline gui=underline
+hi def Emphasis cterm=italic gui=italic
+hi def Strong cterm=bold gui=bold
 
 " the other groups are linked to existing groups
-hi default link Struct Statement
-hi default link Code Type
-hi default link Warning DiffText
-hi default link Missing DiffChange
-hi default link Parenthese Function
-
-hi default link Citation Struct
-hi default link CitationText Constant
-hi default link CitationKey Underlined
-
-hi default link Footnote Struct
-hi default link FootnoteCall Struct
-hi default link FootnoteText Constant
-
-hi default link Super Constant
-hi default link SuperSign Struct
-hi default link Sub Super
-hi default link SubSign SuperSign
-hi default link _Class Struct
-hi default link ClassText Strong
-hi default link ClassName Struct
-hi default link TitleRule Struct
-hi default link ListItem Struct
-hi default link Example Struct
-hi default link Rule Struct
-hi default link FencedDiv Struct
-hi default link CodeDelimiter Struct
-
-hi default link Definition Constant
-
-hi default link YamlKey Struct
-hi default link YamlFrontMatter Constant
-
-hi default link HtmlTag Struct
-hi default link HtmlAttr Struct
-hi default link htmlAttrVal Struct
-
-hi default link Url Underlined
-hi default link Hypertext Url
-hi default link Filepath Url
-
-hi default link Mark Strong
+hi def link Struct Statement
+hi def link Code Type
+hi def link Citation Struct
+hi def link CitationText Constant
+hi def link CitationKey Underlined
+hi def link Footnote Struct
+hi def link FootnoteCall Struct
+hi def link FootnoteText Constant
+hi def link Super Constant
+hi def link SuperSign Struct
+hi def link Sub Super
+hi def link SubSign SuperSign
+hi def link _Class Struct
+hi def link ClassText Strong
+hi def link ClassName Struct
+hi def link TitleRule Struct
+hi def link ListItem Struct
+hi def link Example Struct
+hi def link Rule Struct
+hi def link FencedDiv Struct
+hi def link CodeDelimiter Struct
+hi def link Definition Constant
+hi def link YamlKey Struct
+hi def link YamlFrontMatter Constant
+hi def link HtmlTag Struct
+hi def link HtmlAttr Struct
+hi def link htmlAttrVal Struct
+hi def link Url Underlined
+hi def link Hypertext Url
+hi def link Mark Strong
+hi def link Concept Strong
 
 " emphasis contained in other groups are not in italic
 " but least they contains=@NoSpell and have the same color
 " as their container
-hi default link EmphasisString String
-hi default link EmphasisParenthese Parenthese
-hi default link EmphasisFootnoteText FootnoteText
+hi def link EmphasisString String
+hi def link EmphasisParenthese Parenthese
+hi def link EmphasisFootnoteText FootnoteText
 
 let b:current_syntax = "markdown"
