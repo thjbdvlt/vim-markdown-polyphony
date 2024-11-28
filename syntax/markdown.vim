@@ -24,7 +24,7 @@ syn region Comment
             \ start=/,,/ end=/$/
             \ contains=@NoSpell
             \ containedin=ALLBUT,@NoMD
-            \ keepend
+            \ keepend 
 
 " commentaires supplémentaires, en début de ligne
 syn region Comment
@@ -55,19 +55,23 @@ syn match CitationKey
             \ "@[a-zÀ-ÿ0-9_]\+"
             \ containedin=ALLBUT,@NoMD,Example
             \ contains=@NoSpell
+            \ conceal cchar=¶
 syn region CitationText
             \ start=/\[\@1<=.\?/ end=/.\?\]\@=/
             \ containedin=Citation contained
+            \ conceal cchar=¶
 
 " footnotes
 syn match FootnoteCall
             \ /.\@<=\[\^\S\+\]/ contains=@NoSpell
+            \ conceal cchar=¶
 syn region _Footnote
             \ start=/^\[\^\S\+\]:/
             \ end=/$/
 syn match Footnote /^\[\^\S\+\]:/
             \ containedin=_Footnote contained
             \ contains=@NoSpell
+            \ conceal cchar=¶
 syn region FootnoteText
             \ start=/:\@<=./ end=/$/
             \ containedin=_Footnote contained
@@ -102,6 +106,7 @@ syn region Hypertext
 syn region Url
             \ matchgroup=Struct start=/(/ end=/)/ 
             \ containedin=_Url contained
+            \ conceal cchar=/
 syn match Url "<\?https\?://\S\+"
             \ contains=@NoSpell
             \ containedin=ALLBUT,@NoMD,URL
@@ -194,6 +199,7 @@ syn region ClassText matchgroup=_Class start=/\[/ end=/\]/
             \ containedin=_Class keepend contained
 syn region ClassName matchgroup=_Class start=/{\./ end=/}/
             \ containedin=_Class keepend contained contains=@NoSpell
+            \ conceal cchar=|
 
 " subscrit and superscript: 42^ème^
 syn region Super
@@ -279,9 +285,9 @@ hi default link HtmlTag Struct
 hi default link HtmlAttr Struct
 hi default link htmlAttrVal Struct
 
-hi default link Hypertext Strong
 hi default link Url Underlined
-hi default link Filepath Underlined
+hi default link Hypertext Url
+hi default link Filepath Url
 
 hi default link Mark Strong
 
