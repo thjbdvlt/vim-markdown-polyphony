@@ -1,12 +1,12 @@
-markdown syntax for vim, with additional highlights for academic writings:
+markdown syntax for vim, based on [pandoc](https://pandoc.org/MANUAL.html#pandocs-markdown), with additional highlights:
 
-- quotes (inline quote and block quote)
-- comments with `,,`
-- footnotes
+- inline quotes
 - parentheses
-- citation keys (for pandoc)
-
-(and basic markdown syntax: emphasis, strong, heading, code, definition list, html tags)
+- comments:
+    - comments with `,,`
+    - missing developpement (line beginning with `...`)
+    - important comment with `!!`
+- ...
 
 the repository also contains a simple bash script to remove `,,` comments when exported with pandoc.
 
@@ -31,7 +31,7 @@ html comments are much too long, sometimes even longer than the comment itself:
 
 that's why i added a shorter and easier-to-write syntax. i never use double commas in my text and commas are very accessible in many keyboards so it seems to be a good option. (i did not want to use `//` becaus i often use this in my notes.)
 
-the bash script is meant to be used as a preprocessing tool:
+the bash script is meant to be used as a preprocessing tool. it remove comma comments and add newlines between files (just as Pandoc would do).
 
 ```bash
 ./uncomma *.md | pandoc -

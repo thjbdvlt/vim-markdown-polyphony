@@ -29,11 +29,11 @@ syn region Comment
 " commentaires supplémentaires, en début de ligne
 syn region Comment
             \ matchgroup=Missing start=/^ *\.\.\.\+/ end=/$/
-            \ containedin=ALL contains=@NoSpell
+            \ containedin=ALLBUT,@NoMD contains=@NoSpell
 
 syn region Comment
             \ matchgroup=Warning start=/^ *\!\!\+/ end=/$/
-            \ containedin=ALL contains=@NoSpell,WarningSign
+            \ containedin=ABUT,@NoMDLL contains=@NoSpell,WarningSign
 
 " inline quotes
 syn region String
@@ -154,9 +154,9 @@ syn region Strong
 
 " inline code: `
 syn region Code
-            \ start=/[^`]\@<=`\|^`/
-            \ skip=/[^\\]\\`/
-            \ end=/`[^`]\@=\|`$/
+            \ matchgroup=CodeDelimiter
+            \ start=/`/
+            \ end=/`/
             \ contains=@NoSpell
             \ containedin=ALLBUT,Code,Comment
 
@@ -182,7 +182,8 @@ syn region Definition start=/^:/ end=/$/
 
 " code block: ```
 syn region Code
-            \ matchgroup=CodeDelimiter start=/^```\S\+/ end=/^```$/
+            \ matchgroup=CodeDelimiter
+            \ start=/^```\S\+/ end=/^```$/
             \ contains=@NoSpell keepend
 
 " titles
