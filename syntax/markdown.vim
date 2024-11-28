@@ -16,11 +16,14 @@
 " comment with ,,
 setl commentstring=\,,%s
 
+" a cluster with stuff in which markdown isn't active
+syn cluster NoMD contains=Comment,Code,YamlFrontMatter
+
 " comment with ,,
 syn region Comment
             \ start=/,,/ end=/$/
             \ contains=@NoSpell
-            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
+            \ containedin=ALLBUT,@NoMD
             \ keepend
 
 " commentaires supplémentaires, en début de ligne
@@ -30,7 +33,7 @@ syn region Comment
 
 syn region Comment
             \ matchgroup=Warning start=/^ *\!\!\+/ end=/$/
-            \ containedin=ALL contains=@NoSpell
+            \ containedin=ALL contains=@NoSpell,WarningSign
 
 " inline quotes
 syn region String
@@ -46,11 +49,11 @@ syn region String
 " citations (pandoc citeproc)
 syn match Citation
             \ "\[[^\[\]]*@[^\[\]]*\]"
-            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
+            \ containedin=ALLBUT,@NoMD
             \ keepend
 syn match CitationKey
             \ "@[a-zÀ-ÿ0-9_]\+"
-            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter,Example
+            \ containedin=ALLBUT,@NoMD,Example
             \ contains=@NoSpell
 syn region CitationText
             \ start=/\[\@1<=.\?/ end=/.\?\]\@=/
@@ -71,7 +74,7 @@ syn region FootnoteText
 syn region FootnoteText
             \ matchgroup=Footnote start=/\^\[/
             \ end=/\]/
-            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
+            \ containedin=ALLBUT,@NoMD
             \ keepend
 syn region FootnoteText
             \ start=/\[\@<=.\?/ end=/.\?\]\@=/
@@ -84,11 +87,12 @@ syn match Rule /^---$/
 syn region Parenthese
             \ start="(" end=")"
             \ contains=String,Code,Emphasis
-            \ containedin=ALLBUT,Comment,Code,String,Title,EmphasisString,_Url,Example
+            \ containedin=ALLBUT,@NoMD,_Url,Example
+            \ keepend
 
 " example list
 syn match Example /(@[a-z]*)/ contains=@NoSpell
-            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
+            \ containedin=ALLBUT,@NoMD
 
 " url and hypertext
 syn match _Url /\[[^\]]\+\]([^)]\+)/ keepend
@@ -100,7 +104,7 @@ syn region Url
             \ containedin=_Url contained
 syn match Url "<\?https\?://\S\+"
             \ contains=@NoSpell
-            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter,URL
+            \ containedin=ALLBUT,@NoMD,URL
             \ keepend
 
 " file paths
@@ -206,12 +210,12 @@ syn region Sub
 syn match Struct /|/
 syn region Mark
             \ matchgroup=Struct start=/==/ end=/==/
-            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
+            \ containedin=ALLBUT,@NoMD
 
 " html (comments, tags, attributes, attribute values)
 syn region Comment
             \ start=/<!--/ end=/-->/
-            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
+            \ containedin=ALLBUT,@NoMD
             \ keepend
 " html tag
 syn match htmlTag
@@ -244,6 +248,7 @@ hi default link Struct Statement
 hi default link Code Type
 hi default link Warning DiffText
 hi default link Missing DiffChange
+hi default link Parenthese Function
 
 hi default link Citation Struct
 hi default link CitationText Constant
