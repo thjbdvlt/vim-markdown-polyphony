@@ -1,14 +1,14 @@
-markdown syntax for vim, based on [pandoc](https://pandoc.org/MANUAL.html#pandocs-markdown), with additional highlights:
+extended markdown syntax for vim, based on [pandoc](https://pandoc.org/MANUAL.html#pandocs-markdown).
 
 - inline quotes
 - parentheses
 - comments:
     - comments with `,,`
-    - missing developpement (line beginning with `...`)
-    - important comment with `!!`
+    - missing developpement with `...` (beginning of line)
+    - important comment with `!!` (beginning of line)
 - ...
 
-the repository also contains a simple bash script to remove `,,` comments when exported with pandoc.
+the repository also contains a simple bash script to remove these comments (e. g. for pandoc).
 
 quotes and parentheses
 ----------------------
@@ -47,7 +47,12 @@ ft.set('markdown', {',,%s'})
 install
 -------
 
-just like any other vim plugin, or append the content of the syntax file to `syntax/markdown.vim`
+just like any other vim plugin, using you plugin manager file to `syntax/markdown.vim`.
+if you want to use the additional syntax, you need to set an option:
+
+```vim
+let g:markdown_polyphony=1
+```
 
 treesitter
 ----------
