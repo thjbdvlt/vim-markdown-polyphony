@@ -160,11 +160,6 @@ syn region Code
             \ contains=@NoSpell
             \ containedin=ALLBUT,Code,Comment
 
-" code block: ```
-syn region Code
-            \ start=/^```\S\+/ end=/^```$/
-            \ contains=@NoSpell
-
 " yaml frontmatter
 syn region YamlFrontmatter
             \ matchgroup=Struct
@@ -180,8 +175,15 @@ syn match YamlKey "^[^: ]\+:"
 syn match ListItem "^\s*[\-\+\*] \|^\s*\d\+\."
 
 " defintion list
-syn match Concept "[^\n]\+\n\n\?:\@=" contains=@NoSpell
-syn region Definition start=/^:/ end=/$/
+syn match Concept "[^\n]\+\n\n\?:\@=" 
+            \ containedin=ALLBUT,@NoMD
+syn region Definition start=/^:/ end=/$/ 
+            \ containedin=ALLBUT,@NoMD
+
+" code block: ```
+syn region Code
+            \ matchgroup=CodeDelimiter start=/^```\S\+/ end=/^```$/
+            \ contains=@NoSpell keepend
 
 " titles
 syn match Title /^.\+\n-\+$/ contains=TitleRule
@@ -189,6 +191,9 @@ syn match Title /^.\+\n=\+$/ contains=TitleRule
 syn match Title /^#\+ .*/ contains=TitleRule
 syn match TitleRule /^[=-]\+$/ contained
 syn match TitleRule /^#\+/ contained
+
+" fenced divs
+syn match FencedDiv /^:::.*$/ contains=@NoSpell containedin=NONE keepend
 
 " class: [xiii]{.smallcaps}
 " TODO: do this somehow else
@@ -275,6 +280,8 @@ hi default link TitleRule Struct
 hi default link ListItem Struct
 hi default link Example Struct
 hi default link Rule Struct
+hi default link FencedDiv Struct
+hi default link CodeDelimiter Struct
 
 hi default link Definition Constant
 
