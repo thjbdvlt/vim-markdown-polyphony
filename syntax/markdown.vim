@@ -98,7 +98,7 @@ syn region Hypertext
 syn region Url
             \ matchgroup=Struct start=/(/ end=/)/ 
             \ containedin=_Url contained
-syn match Hypertext "<\?https\?://\S\+"
+syn match Url "<\?https\?://\S\+"
             \ contains=@NoSpell
             \ containedin=ALLBUT,Comment,Code,YamlFrontMatter,URL
             \ keepend
@@ -116,22 +116,26 @@ syn region Emphasis
             \ contains=@NoSpell
 
 syn region Emphasis
-            \ start="\*" skip="\\\*" end="\*"
-            \ contains=@NoSpell
+            \ start=/\*/ skip=/\\\*/ end=/\*/
+            \ contains=@NoSpell keepend
 
 " Emphasis in other groups (only with '*')
 syn region EmphasisString
             \ start="\*" skip="\\\*" end="\*"
             \ contains=@NoSpell containedin=String
+            \ contained keepend
 syn region EmphasisParenthese
             \ start="\*" skip="\\\*" end="\*"
             \ contains=@NoSpell containedin=Parenthese
+            \ contained keepend
 syn region EmphasisFootnoteText
             \ start="\*" skip="\\\*" end="\*"
             \ contains=@NoSpell containedin=FootnoteText
+            \ contained keepend
 syn region EmphasisTitle
             \ start="\*" skip="\\\*" end="\*"
             \ contains=@NoSpell containedin=Title
+            \ contained keepend
 
 " strong
 syn region Strong
@@ -187,14 +191,22 @@ syn region ClassText matchgroup=_Class start=/\[/ end=/\]/
 syn region ClassName matchgroup=_Class start=/{\./ end=/}/
             \ containedin=_Class keepend contained contains=@NoSpell
 
-" superscript: 42^ème^
-syn match Super
-            \ /\^[a-zÀ-ÿ0-9_]\+\^/
+" subscrit and superscript: 42^ème^
+syn region Super
+            \ matchgroup=SuperSign start=/\^\@=\S/ end=/\^/
             \ contains=@NoSpell
             \ containedin=Normal,String,FootnoteText
-            \ keepend
-syn match SuperSign 
-            \ /\^/ contained containedin=Super
+            \ oneline keepend
+syn region Sub
+            \ matchgroup=SubSign start=/\~\@=\S/ end=/\~/
+            \ contains=@NoSpell
+            \ containedin=Normal,String,FootnoteText
+            \ oneline keepend
+
+syn match Struct /|/
+syn region Mark
+            \ matchgroup=Struct start=/==/ end=/==/
+            \ containedin=ALLBUT,Comment,Code,YamlFrontMatter
 
 " html (comments, tags, attributes, attribute values)
 syn region Comment
@@ -243,6 +255,8 @@ hi default link FootnoteText Constant
 
 hi default link Super Constant
 hi default link SuperSign Struct
+hi default link Sub Super
+hi default link SubSign SuperSign
 hi default link _Class Struct
 hi default link ClassText Strong
 hi default link ClassName Struct
@@ -264,7 +278,7 @@ hi default link Hypertext Strong
 hi default link Url Underlined
 hi default link Filepath Underlined
 
-hi default link Parenthese Function
+hi default link Mark Strong
 
 " emphasis contained in other groups are not in italic
 " but least they contains=@NoSpell and have the same color
