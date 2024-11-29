@@ -24,7 +24,7 @@ syn region Attribute start=/{[\.#]/ end=/}/ contained conceal cchar=µ
 syn match Rule /|[-|=:]\+|/ keepend containedin=ALLBUT,@NoMD
 syn match Example /(@[a-z]*)/ contains=@NoSpell containedin=ALLBUT,@NoMD
 syn region LinkDef start=/^\[[^^\]]*\]:/ end=/$/ contains=@NoSpell
-syn match _Url "\[[^\]]\+\]([^)]\+)" keepend
+syn match _Url "\[[^\]]*\]([^)]\+)" keepend
 syn region Hypertext matchgroup=Struct start=/\[/ end=/\]/ containedin=_Url contained keepend
 syn region Url matchgroup=Struct start=/\]\@<=(/ end=/)/ contained conceal cchar=/
 syn region Url matchgroup=Struct start=/(/ end=/)/ containedin=_Url contained conceal cchar=/
