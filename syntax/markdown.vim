@@ -16,7 +16,7 @@ syn region FootnoteText start="\[\@<=.\?" end=".\?\]\@=" contained keepend
 syn match Struct "|" keepend containedin=ALLBUT,@NoMD,Rule
 syn match Rule "^---\+$"
 syn match Rule "^===\+$"
-syn region Brackets matchgroup=Struct start="\[" end="\]" containedin=ALLBUT,@NoMD nextgroup=Attribute oneline keepend extend
+syn region Brackets matchgroup=Struct start="\[" end="\]" containedin=ALLBUT,@NoMD,ModifiedQuote nextgroup=Attribute oneline keepend extend
 syn region Attribute start="{[\.#]" end="}" contained conceal cchar=µ
 syn match Rule "|[-|=:]\+|" keepend containedin=ALLBUT,@NoMD
 syn match Example "(@[a-z]*)" contains=@NoSpell containedin=ALLBUT,@NoMD
@@ -27,7 +27,7 @@ syn region Url matchgroup=Struct start="\]\@<=(" end=")" contained conceal cchar
 syn region Url matchgroup=Struct start="(" end=")" containedin=_Url contained conceal cchar=/
 syn match Url "<\?https\?://\S\+" contains=@NoSpell containedin=ALLBUT,@NoMD,URL keepend
 syn region Emphasis start="\*" skip="\\\*" end="\*" contains=@NoSpell keepend
-syn region Emphasis start="\*" skip="\\\*" end="\*" contains=@NoSpell keepend transparent containedin=ALLBUT,@NoMD
+syn region Emphasis start="\*" skip="\\\*" end="\*" contains=@NoSpell keepend transparent containedin=ALLBUT,@NoMD contained
 syn region Strong start="\S\@<=__\|__\S\@=" skip="\\__" end="\S\@<=__\|__\S\@="
 syn region Code matchgroup=Struct start="`" end="`" contains=@NoSpell containedin=ALLBUT,@NoMD
 syn match ListItem "^\s*[\-\+\*] \|^\s*\d\+\."
@@ -52,9 +52,12 @@ syn region YamlFrontmatter matchgroup=Struct start="\%1l^---$" end="^---$" conta
 syn match YamlKey "^[-a-zA-Z_0-9]\+:" containedin=YamlFrontMatter contained contains=@NoSpell
 syn match YamlKey "^ *- [-a-zA-Z_0-9]*:" containedin=YamlFrontMatter contained contains=@NoSpell
 
-syn region CitationText start="\[\@<=."rs=s-1 end="@"me=e-1 containedin=Brackets contained conceal
+syn match CitationText "\[\@<=.*@"me=e-1 containedin=Brackets contained conceal
 syn region CitationText start="@[a-zÀ-ÿ0-9_]\+"rs=e+1 end="\]"re=e-1 containedin=Brackets contained conceal
-syn match CitationKey "@[a-zÀ-ÿ0-9_]\+" containedin=CitationText contained conceal cchar=@
+syn match CitationKey "@[a-zÀ-ÿ0-9_]\+" containedin=CitationText contained conceal cchar=@ contains=@NoSpell
+
+syn match ModifiedQuote "[a-zÀ-ÿ0-9_]\+\[[a-zÀ-ÿ0-9_]\+\]" contains=@NoSpell containedin=String contained transparent
+syn match ModifiedQuote "\[[^@\]\[]\+\]" contains=@NoSpell containedin=String contained transparent
 
 " i define a few specific highlights by default
 hi def Emphasis cterm=italic gui=italic
@@ -100,7 +103,7 @@ if exists('g:markdown_polyphony')
     syn region Comment start=",," end="$" oneline contains=@NoSpell containedin=ALLBUT,@NoMD keepend 
     syn region Comment matchgroup=Missing start="^ *\.\.\.\+" end="$" containedin=ALLBUT,@NoMD contains=@NoSpell
     syn region Warning start="^" end="!!" containedin=Comment contained contains=@NoSpell,WarningSign oneline
-    syn region String start=/"/ skip=/[^\\]\\"/ end=/"/ keepend containedin=FootnoteText
+    syn region String start=/"/ skip=/[^\\]\\"/ end=/"/ keepend 
     syn region Parenthese start="(" end=")" contains=String,Code,Emphasis containedin=ALLBUT,@NoMD,_Url,Example keepend
     syn match Filepath "\.\+\(/[a-zÀ-ÿ0-9_]\+\(\.[a-zA-Z0-9]\+\)\?\)\+/\?" contains=@NoSpell
     hi def link Parenthese Function
