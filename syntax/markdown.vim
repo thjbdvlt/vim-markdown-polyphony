@@ -1,12 +1,14 @@
-" markdown syntax. thjbdvlt (2024). License MIT
-" (Pandoc is used as a reference, but it's not fully supported.)
+" + markdown syntax (Pandoc is used as a reference, but it's not fully supported.)
+" + polyphony, a markdown syntax extension
+"
+" thjbdvlt (2024). License MIT
 
 " a cluster with stuff in which markdown isn't active
 syn cluster NoMD contains=Comment,Code,YamlFrontMatter
 syn region String start="^>.*" end="\n\n" contains=EmphasisString,Class keepend
 syn match Citation "\[[^\[\]]*@[^\[\]]*\]" containedin=ALLBUT,@NoMD keepend
-syn match CitationKey "@[a-zÀ-ÿ0-9_]\+" containedin=ALLBUT,@NoMD,Example contains=@NoSpell conceal cchar=¶
-syn region CitationText start=/\[\@1<=.\?/ end=/.\?\]\@=/ containedin=Citation contained conceal cchar=¶
+syn match CitationKey "@[a-zÀ-ÿ0-9_]\+" containedin=ALLBUT,@NoMD,Example contains=@NoSpell conceal cchar=@
+syn region CitationText start=/\[\@1<=.\?/ end=/.\?\]\@=/ containedin=Citation contained conceal cchar=@
 syn match FootnoteCall /.\@<=\[\^\S\+\]/ contains=@NoSpell conceal cchar=¶
 syn region _Footnote start=/^\[\^\S\+\]:/ end=/$/
 syn match Footnote /^\[\^\S\+\]:/ containedin=_Footnote contained contains=@NoSpell conceal cchar=¶
@@ -99,17 +101,27 @@ hi def link EmphasisFootnoteText FootnoteText
 
 let b:current_syntax = "markdown"
 
-" polyphony, a markdown syntax extension. thjbdvlt (2024). License MIT
 if exists('g:markdown_polyphony')
+
     setl commentstring=\,,%s
     syn region Comment start=/,,/ end=/$/ oneline contains=@NoSpell containedin=ALLBUT,@NoMD keepend 
     syn region Comment matchgroup=Missing start=/^ *\.\.\.\+/ end=/$/ containedin=ALLBUT,@NoMD contains=@NoSpell
     syn region Comment matchgroup=Warning start=/^ *\!\!\+/ end=/$/ containedin=ABUT,@NoMDLL contains=@NoSpell,WarningSign
+
     syn region String start=/"/ skip=/[^\\]\\"/ end=/"/ keepend containedin=FootnoteText
     syn region Parenthese start="(" end=")" contains=String,Code,Emphasis containedin=ALLBUT,@NoMD,_Url,Example keepend
     syn match Filepath "\.\+\(/[a-zÀ-ÿ0-9_]\+\(\.[a-zA-Z0-9]\+\)\?\)\+/\?" contains=@NoSpell
+
+    hi def link Parenthese Function
+
+    hi def link Filepath Url
+
+    " i use the Diff... groups, because this is what's all about..?
     hi def link Warning DiffText
     hi def link Missing DiffChange
-    hi def link Parenthese Function
-    hi def link Filepath Url
+    hi def link ToReRead DiffDelete
+
+    " TODO: make that 'matchadd()' stuff cleaner
+    autocmd BufEnter *.md let x = matchadd("ToReRead", "^??.*")
+    autocmd BufLeave *.md call clearmatches(0)
 endif
