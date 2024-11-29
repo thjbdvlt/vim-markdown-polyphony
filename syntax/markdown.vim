@@ -42,7 +42,7 @@ syn match TitleRule "^#\+" contained
 syn match FencedDiv "^:::.*$" contains=@NoSpell containedin=NONE keepend
 syn region Super matchgroup=SuperSign start="\^\@=\S" end="\^" contains=@NoSpell containedin=Normal,String,FootnoteText oneline keepend
 syn region Sub matchgroup=SubSign start="\~\@=\S" end="\~" contains=@NoSpell containedin=Normal,String,FootnoteText oneline keepend
-syn region Mark matchgroup=Struct start="==" end="==" containedin=ALLBUT,@NoMD
+syn region Mark matchgroup=Struct start="==" end="==" containedin=ALLBUT,@NoMD oneline
 syn region Comment start="<!--" end="-->" containedin=ALLBUT,@NoMD keepend
 syn match htmlTag "<[a-z]\+\( [^>]\+\)*/\?>" contains=@NoSpell,htmlAttr keepend
 syn match htmlTag "</[a-z]\+>" contains=@NoSpell,htmlAttr keepend
@@ -93,24 +93,26 @@ hi def link LinkDef Struct
 hi def link Mark Strong
 hi def link Concept Strong
 
-let b:current_syntax = "markdown"
-
 " polyphony: a markdown extension
 if exists('g:markdown_polyphony')
     setl commentstring=\,,%s
     syn region Comment start=",," end="$" oneline contains=@NoSpell containedin=ALLBUT,@NoMD keepend 
     syn region Comment matchgroup=Missing start="^ *\.\.\.\+" end="$" containedin=ALLBUT,@NoMD contains=@NoSpell
-    syn region Warning start="^" end="!!" containedin=Comment contained contains=@NoSpell,WarningSign oneline
+    syn region CommentWarning start=",," end="!!" containedin=Comment contained contains=@NoSpell,WarningSign oneline
     syn region String start=/"/ skip=/[^\\]\\"/ end=/"/ keepend 
     syn region Parenthese start="(" end=")" contains=String,Code,Emphasis containedin=ALLBUT,@NoMD,_Url,Example keepend
     syn match Filepath "\.\+\(/[a-zÀ-ÿ0-9_]\+\(\.[a-zA-Z0-9]\+\)\?\)\+/\?" contains=@NoSpell
     hi def link Parenthese Function
     hi def link Filepath Url
     " i use the Diff... groups, because this is what's all about..?
-    hi def link Warning DiffText
-    hi def link Missing DiffChange
-    hi def link ToReRead DiffDelete
+    hi def link Missing DiffAdd
+    hi def link ToReRead DiffChange
+    hi def link ToReWrite DiffDelete
+    hi def link CommentWarning Comment
     " TODO: make that 'matchadd()' stuff cleaner
     autocmd BufEnter *.md let x = matchadd("ToReRead", "^??.*")
+    autocmd BufEnter *.md let x = matchadd("ToReWrite", "^!!.*")
     autocmd BufLeave *.md call clearmatches(0)
 endif
+
+let b:current_syntax = "markdown"
