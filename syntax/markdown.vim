@@ -1,10 +1,11 @@
-" + markdown syntax (Pandoc is used as a reference, but it's not fully supported.)
+" markdown syntax
+" (Pandoc is used as a reference, but it's not fully supported.)
 " + polyphony, a markdown syntax extension
 "
 " thjbdvlt (2024). License MIT
 
 " a cluster with stuff in which markdown isn't active
-syn cluster NoMD contains=Comment,Code,YamlFrontMatter
+syn cluster NoMD contains=Comment,Code,YamlFrontMatter,LinkDef
 syn region String start="^>.*" end="\n\n" contains=EmphasisString,Class keepend
 syn match Citation "\[[^\[\]]*@[^\[\]]*\]" containedin=ALLBUT,@NoMD keepend
 syn match CitationKey "@[a-zÀ-ÿ0-9_]\+" containedin=ALLBUT,@NoMD,Example contains=@NoSpell conceal cchar=@
@@ -15,13 +16,16 @@ syn match Footnote /^\[\^\S\+\]:/ containedin=_Footnote contained contains=@NoSp
 syn region FootnoteText start=/:\@<=./ end=/$/ containedin=_Footnote contained
 syn region FootnoteText matchgroup=Footnote start=/\^\[/ end=/\]/ containedin=ALLBUT,@NoMD keepend
 syn region FootnoteText start=/\[\@<=.\?/ end=/.\?\]\@=/ contained keepend
+syn match Struct /|/ keepend containedin=ALLBUT,@NoMD,Rule
 syn match Rule /^---\+$/
 syn match Rule /^===\+$/
-syn match Struct /|/
+syn match Rule /|[-|=:]\+|/ keepend containedin=ALLBUT,@NoMD
 syn match Example /(@[a-z]*)/ contains=@NoSpell containedin=ALLBUT,@NoMD
-syn match _Url /\[[^\]]\+\]([^)]\+)/ keepend
-syn region Hypertext matchgroup=Struct start=/\[/ end=/\]/  containedin=_Url contained
-syn region Url matchgroup=Struct start=/(/ end=/)/  containedin=_Url contained conceal cchar=/
+syn region LinkDef start=/^\[[^^\]]*\]:/ end=/$/ contains=@NoSpell
+syn match _Url "\[[^\]]\+\]([^)]\+)" keepend
+syn region Hypertext matchgroup=Struct start=/\[/ end=/\]/ containedin=_Url contained keepend
+syn region Url matchgroup=Struct start=/\]\@<=(/ end=/)/ contained conceal cchar=/
+syn region Url matchgroup=Struct start=/(/ end=/)/ containedin=_Url contained conceal cchar=/
 syn match Url "<\?https\?://\S\+" contains=@NoSpell containedin=ALLBUT,@NoMD,URL keepend
 syn region Emphasis start=/\*/ skip=/\\\*/ end=/\*/ contains=@NoSpell keepend
 syn region Emphasis start="\W\@<=_\w\@=\|^_\w\@=\|\W\@<=_\W\@=" skip="\\_" end="\w\@<=_\W\@=\|_$\|\W\@<=_\W\@=" contains=@NoSpell
@@ -30,12 +34,12 @@ syn region EmphasisParenthese start="\*" skip="\\\*" end="\*" contains=@NoSpell 
 syn region EmphasisFootnoteText start="\*" skip="\\\*" end="\*" contains=@NoSpell containedin=FootnoteText contained keepend
 syn region EmphasisTitle start="\*" skip="\\\*" end="\*" contains=@NoSpell containedin=Title contained keepend
 syn region Strong start="\S\@<=__\|__\S\@=" skip="\\__" end="\S\@<=__\|__\S\@="
-syn region Code matchgroup=CodeDelimiter start=/`/ end=/`/ contains=@NoSpell containedin=ALLBUT,Code,Comment
+syn region Code matchgroup=CodeDelimiter start=/`/ end=/`/ contains=@NoSpell containedin=ALLBUT,@NoMD
 syn region YamlFrontmatter matchgroup=Struct start=/\%1l^---$/ end=/^---$/ contains=@NoSpell
 syn match YamlKey "^[^: ]\+:" containedin=YamlFrontMatter contained contains=@NoSpell
 syn match ListItem "^\s*[\-\+\*] \|^\s*\d\+\."
-syn match Concept "[^\n]\+\n\n\?:\@="  containedin=ALLBUT,@NoMD
-syn region Definition start=/^:/ end=/$/  containedin=ALLBUT,@NoMD
+syn match Concept "[^\n]\+\n\n\?:\@=" containedin=ALLBUT,@NoMD
+syn region Definition start=/^:/ end=/$/ containedin=ALLBUT,@NoMD
 syn region Code matchgroup=CodeDelimiter start=/^```\S\+/ end=/^```$/ contains=@NoSpell keepend
 syn match Title /^.\+\n-\+$/ contains=TitleRule
 syn match Title /^.\+\n=\+$/ contains=TitleRule
@@ -89,6 +93,7 @@ hi def link HtmlAttr Struct
 hi def link htmlAttrVal Struct
 hi def link Url Underlined
 hi def link Hypertext Url
+hi def link LinkDef Struct
 hi def link Mark Strong
 hi def link Concept Strong
 
@@ -101,26 +106,21 @@ hi def link EmphasisFootnoteText FootnoteText
 
 let b:current_syntax = "markdown"
 
+" polyphony: a markdown extension
 if exists('g:markdown_polyphony')
-
     setl commentstring=\,,%s
     syn region Comment start=/,,/ end=/$/ oneline contains=@NoSpell containedin=ALLBUT,@NoMD keepend 
     syn region Comment matchgroup=Missing start=/^ *\.\.\.\+/ end=/$/ containedin=ALLBUT,@NoMD contains=@NoSpell
-    syn region Comment matchgroup=Warning start=/^ *\!\!\+/ end=/$/ containedin=ABUT,@NoMDLL contains=@NoSpell,WarningSign
-
+    syn region Comment matchgroup=Warning start=/^ *\!\!\+/ end=/$/ containedin=ABUT,@NoMD contains=@NoSpell,WarningSign
     syn region String start=/"/ skip=/[^\\]\\"/ end=/"/ keepend containedin=FootnoteText
     syn region Parenthese start="(" end=")" contains=String,Code,Emphasis containedin=ALLBUT,@NoMD,_Url,Example keepend
     syn match Filepath "\.\+\(/[a-zÀ-ÿ0-9_]\+\(\.[a-zA-Z0-9]\+\)\?\)\+/\?" contains=@NoSpell
-
     hi def link Parenthese Function
-
     hi def link Filepath Url
-
     " i use the Diff... groups, because this is what's all about..?
     hi def link Warning DiffText
     hi def link Missing DiffChange
     hi def link ToReRead DiffDelete
-
     " TODO: make that 'matchadd()' stuff cleaner
     autocmd BufEnter *.md let x = matchadd("ToReRead", "^??.*")
     autocmd BufLeave *.md call clearmatches(0)
