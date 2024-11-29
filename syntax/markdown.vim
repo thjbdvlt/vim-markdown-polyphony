@@ -7,16 +7,10 @@
 " a cluster with stuff in which markdown isn't active
 syn cluster NoMD contains=Comment,Code,YamlFrontMatter,LinkDef
 syn region String start="^>.*" end="\n\n" contains=EmphasisString,Class keepend
-syn match FootnoteCall ".\@<=\[\^\S\+\]" contains=@NoSpell conceal cchar=¶
-syn region _Footnote start="^\[\^\S\+\]:" end="$"
-syn match Footnote "^\[\^\S\+\]:" containedin=_Footnote contained contains=@NoSpell conceal cchar=¶
-syn region FootnoteText start=":\@<=." end="$" containedin=_Footnote contained
-syn region FootnoteText matchgroup=Footnote start="\^\[" end="\]" containedin=ALLBUT,@NoMD keepend
-syn region FootnoteText start="\[\@<=.\?" end=".\?\]\@=" contained keepend
 syn match Struct "|" keepend containedin=ALLBUT,@NoMD,Rule
 syn match Rule "^---\+$"
 syn match Rule "^===\+$"
-syn region Brackets matchgroup=Struct start="\[" end="\]" containedin=ALLBUT,@NoMD,ModifiedQuote nextgroup=Attribute oneline keepend extend
+syn region Brackets matchgroup=Struct start="\[" end="\]" containedin=ALLBUT,@NoMD,ModifiedQuote,Footnote nextgroup=Attribute oneline keepend extend
 syn region Attribute start="{[\.#]" end="}" contained conceal cchar=µ
 syn match Rule "|[-|=:]\+|" keepend containedin=ALLBUT,@NoMD
 syn match Example "(@[a-z]*)" contains=@NoSpell containedin=ALLBUT,@NoMD
@@ -56,6 +50,12 @@ syn region CitationText start="@[a-zÀ-ÿ0-9_]\+"rs=e+1 end="\]"re=e-1 contained
 syn match CitationKey "@[a-zÀ-ÿ0-9_]\+" containedin=CitationText contained conceal cchar=@ contains=@NoSpell
 syn match ModifiedQuote "[a-zÀ-ÿ0-9_]\+\[[a-zÀ-ÿ0-9_]\+\]" contains=@NoSpell containedin=String contained transparent
 syn match ModifiedQuote "\[[^@\]\[]\+\]" contains=@NoSpell containedin=String contained transparent
+syn match FootnoteCall ".\@<=\[\^\S\+\]" contains=@NoSpell conceal cchar=¶
+syn region _Footnote start="^\[\^\S\+\]:" end="$"
+syn match Footnote "^\[\^\S\+\]:" containedin=_Footnote contained contains=@NoSpell conceal cchar=¶
+syn region FootnoteText start=":\@<=." end="$" containedin=_Footnote contained
+syn region FootnoteText matchgroup=Footnote start="\^\[" end="\]" containedin=ALLBUT,@NoMD keepend
+syn region FootnoteText start="\[\@<=.\?" end=".\?\]\@=" contained keepend
 
 " i define a few specific highlights by default
 hi def Emphasis cterm=italic gui=italic
