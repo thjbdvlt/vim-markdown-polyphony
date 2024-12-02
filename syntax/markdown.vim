@@ -12,7 +12,7 @@ syn match Rule "^---\+$"
 syn match Rule "^===\+$"
 syn region Brackets matchgroup=Struct start="\[" end="\]" containedin=ALLBUT,@NoMD,ModifiedQuote,Footnote nextgroup=Attribute oneline keepend extend
 syn region Attribute start="{[\.#]" end="}" contained conceal cchar=µ
-syn match Rule "|[-|=:]\+|" keepend containedin=ALLBUT,@NoMD
+syn match Rule "|[-|=: ]\+|" keepend containedin=ALLBUT,@NoMD
 syn match Example "(@[a-z]*)" contains=@NoSpell containedin=ALLBUT,@NoMD
 syn region LinkDef start="^\[[^^\]]*\]:" end="$" contains=@NoSpell
 syn match _Url "\[[^\]]*\]([^)]\+)" keepend
@@ -48,7 +48,7 @@ syn match YamlKey "^ *- [-a-zA-Z_0-9]*:" containedin=YamlFrontMatter contained c
 syn match CitationText "\[\@<=.*@"me=e-1 containedin=Brackets contained conceal cchar=*
 syn region CitationText start="@[a-zÀ-ÿ0-9_]\+"rs=e+1 end="\]"re=e-1 containedin=Brackets contained conceal cchar=*
 syn match CitationKey "@[a-zÀ-ÿ0-9_]\+" containedin=CitationText contained conceal cchar=@ contains=@NoSpell
-syn match ModifiedQuote "[a-zÀ-ÿ0-9_]\+\[[a-zÀ-ÿ0-9_]\+\]" contains=@NoSpell containedin=String contained transparent
+syn match ModifiedQuote "[a-zÀ-ÿ0-9_]*\[[a-zÀ-ÿ0-9_]\+\][a-zÀ-ÿ0-9_]*" contains=@NoSpell containedin=String contained transparent
 syn match ModifiedQuote "\[[^@\]\[]\+\]" contains=@NoSpell containedin=String contained transparent
 syn match FootnoteCall ".\@<=\[\^\S\+\]" contains=@NoSpell conceal cchar=¶
 syn region _Footnote start="^\[\^\S\+\]:" end="$"
@@ -100,7 +100,7 @@ if exists('g:markdown_polyphony')
     syn region Comment matchgroup=Missing start="^ *\.\.\.\+" end="$" containedin=ALLBUT,@NoMD contains=@NoSpell
     syn region CommentWarning start=",," end="!!" containedin=Comment contained contains=@NoSpell,WarningSign oneline
     syn region String start=/"/ skip=/[^\\]\\"/ end=/"/ keepend 
-    syn region Parenthese start="(" end=")" contains=String,Code,Emphasis containedin=ALLBUT,@NoMD,_Url,Example keepend
+    syn region Parenthese start="(" end=")" contains=String,Code,Emphasis containedin=ALLBUT,@NoMD,_Url,Example,String keepend extend
     syn match Filepath "\.\+\(/[a-zÀ-ÿ0-9_]\+\(\.[a-zA-Z0-9]\+\)\?\)\+/\?" contains=@NoSpell
     hi def link Parenthese Function
     hi def link Filepath Url
