@@ -8,8 +8,8 @@
 syn cluster NoMD contains=Comment,Code,YamlFrontMatter,LinkDef
 syn region String start="^>.*" end="\n\n" contains=EmphasisString,Class keepend
 syn match Struct "|" keepend containedin=ALLBUT,@NoMD,Rule
-syn match Rule "^---\+$"
-syn match Rule "^===\+$"
+syn match Rule "^--\+$"
+syn match Rule "^==\+$"
 syn region Brackets matchgroup=Struct start="\[" end="\]" containedin=ALLBUT,@NoMD,ModifiedQuote,Footnote nextgroup=Attribute oneline keepend extend
 syn region Attribute start="{[\.#]" end="}" contained conceal cchar=µ
 syn match Rule "|[-|=: ]\+|" keepend containedin=ALLBUT,@NoMD
@@ -36,7 +36,7 @@ syn match TitleRule "^#\+" contained
 syn match FencedDiv "^:::.*$" contains=@NoSpell containedin=NONE keepend
 syn region Super matchgroup=SuperSign start="\^\@=\S" end="\^" contains=@NoSpell containedin=Normal,String,FootnoteText oneline keepend
 syn region Sub matchgroup=SubSign start="\~\@=\S" end="\~" contains=@NoSpell containedin=Normal,String,FootnoteText oneline keepend
-syn region Mark matchgroup=Struct start="==" end="==" containedin=ALLBUT,@NoMD oneline
+syn region Mark matchgroup=Struct start="==\w\@=" end="==" containedin=ALLBUT,@NoMD,Title,Rule oneline
 syn region Comment start="<!--" end="-->" containedin=ALLBUT,@NoMD keepend
 syn match htmlTag "<[a-z]\+\( [^>]\+\)*/\?>" contains=@NoSpell,htmlAttr keepend
 syn match htmlTag "</[a-z]\+>" contains=@NoSpell,htmlAttr keepend
