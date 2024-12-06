@@ -48,6 +48,7 @@ syn match YamlKey "^ *- [-a-zA-Z_0-9]*:" containedin=YamlFrontMatter contained c
 syn match CitationText "\[\@<=.*@"me=e-1 containedin=Brackets contained conceal cchar=*
 syn region CitationText start="@[a-zÀ-ÿ0-9_]\+"rs=e+1 end="\]"re=e-1 containedin=Brackets contained conceal cchar=*
 syn match CitationKey "@[a-zÀ-ÿ0-9_]\+" containedin=CitationText contained conceal cchar=@ contains=@NoSpell
+syn match CitationKey "@[a-zÀ-ÿ0-9_]\+" contains=@NoSpell containedin=ALLBUT,@NoMD,Url
 syn match ModifiedQuote "[a-zÀ-ÿ0-9_]*\[[a-zÀ-ÿ0-9_]\+\][a-zÀ-ÿ0-9_]*" contains=@NoSpell containedin=String contained transparent
 syn match ModifiedQuote "\[[^@\]\[]\+\]" contains=@NoSpell containedin=String contained transparent
 syn match FootnoteCall ".\@<=\[\^\S\+\]" contains=@NoSpell conceal cchar=¶
