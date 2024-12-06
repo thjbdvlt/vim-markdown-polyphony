@@ -20,8 +20,8 @@ syn region Hypertext matchgroup=Struct start="\[" end="\]" containedin=_Url cont
 syn region Url matchgroup=Struct start="\]\@<=(" end=")" contained conceal cchar=/
 syn region Url matchgroup=Struct start="(" end=")" containedin=_Url contained conceal cchar=/
 syn match Url "<\?https\?://\S\+" contains=@NoSpell containedin=ALLBUT,@NoMD,URL keepend
-syn region Emphasis start="\*" skip="\\\*" end="\*" contains=@NoSpell keepend
-syn region Emphasis start="\*" skip="\\\*" end="\*" contains=@NoSpell keepend transparent containedin=ALLBUT,@NoMD contained
+syn region Emphasis start="\*[^[:punct:][:space:]]\@=" skip="\\\*" end="[^[:punct:][:space:]]\@<=\*" contains=@NoSpell keepend
+syn region Emphasis start="\*[^[:punct:][:space:]]\@=" skip="\\\*" end="[^[:punct:][:space:]]\@<=\*" contains=@NoSpell keepend transparent containedin=ALLBUT,@NoMD contained
 syn region Strong start="\S\@<=__\|__\S\@=" skip="\\__" end="\S\@<=__\|__\S\@="
 syn region Code matchgroup=Struct start="`" end="`" contains=@NoSpell containedin=ALLBUT,@NoMD
 syn match ListItem "^\s*[\-\+\*] \|^\s*\d\+\."
