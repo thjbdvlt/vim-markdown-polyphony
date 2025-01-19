@@ -4,12 +4,12 @@
 
 pattern_start='^ *(,,|!!|\.\.\.)'
 
-sub_inline='s/,,.*$//'
+sub_inline='s/,,.*$//;s/^\s*\?\?\s*//'
 
 # iterate over all positional arguments
 for i in "$@"
 do
-    grep --invert-match "$pattern_start" "$i"
+    grep -E --invert-match "$pattern_start" "$i"
     echo
     echo
-done | sed "$sub_inline"
+done | sed -r "$sub_inline"

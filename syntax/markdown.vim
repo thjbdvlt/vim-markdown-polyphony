@@ -4,7 +4,6 @@
 "
 " thjbdvlt (2024). License MIT
 
-" a cluster with stuff in which markdown isn't active
 syn cluster NoMD contains=Comment,Code,YamlFrontMatter,LinkDef
 syn region String start="^>.*" end="\n\n" contains=EmphasisString,Class keepend
 syn match Struct "|" keepend containedin=ALLBUT,@NoMD,Rule
@@ -38,20 +37,24 @@ syn region Super matchgroup=SuperSign start="\^\@=\S" end="\^" contains=@NoSpell
 syn region Sub matchgroup=SubSign start="\~\@=\S" end="\~" contains=@NoSpell containedin=Normal,String,FootnoteText oneline keepend
 syn region Mark matchgroup=Struct start="==\w\@=" end="==" containedin=ALLBUT,@NoMD,Title,Rule oneline
 syn region Comment start="<!--" end="-->" containedin=ALLBUT,@NoMD keepend
-syn match htmlTag "<[a-z]\+\( [^>]\+\)*/\?>" contains=@NoSpell,htmlAttr keepend
-syn match htmlTag "</[a-z]\+>" contains=@NoSpell,htmlAttr keepend
+syn match htmlTag "<[a-zA-Z]\+\( [^>]\+\)*/\?>" contains=@NoSpell,htmlAttr keepend
+syn match htmlTag "</[a-zA-Z]\+>" contains=@NoSpell,htmlAttr keepend
 syn region htmlAttr start=/ \@<=[a-z]\+=\"/ skip=/\\"/ end=/"/ containedin=htmlTag contained contains=@NoSpell keepend
 syn region htmlAttrVal start=/"/ skip=/\\"/ end=/"/ containedin=htmlAttr contains=@NoSpell contained
 syn region YamlFrontmatter matchgroup=Struct start="\%1l^---$" end="^---$" contains=@NoSpell
 syn match YamlKey "^[-a-zA-Z_0-9]\+:" containedin=YamlFrontMatter contained contains=@NoSpell
 syn match YamlKey "^ *- [-a-zA-Z_0-9]*:" containedin=YamlFrontMatter contained contains=@NoSpell
-syn match CitationText "\[\@<=.*@"me=e-1 containedin=Brackets contained conceal cchar=*
-syn region CitationText start="@[a-zÀ-ÿ0-9_]\+"rs=e+1 end="\]"re=e-1 containedin=Brackets contained conceal cchar=*
+" " NOTE: No conceal for text BEFORE the Citation, because of the look-behind 
+" using too much memory -- proabably because of my Regex being unefficient.
+" Anyway, it's probably not so bad, as the Citation Suffix is meaningless
+" (e.g. "p. 21"), but the prefix is more likely to be meaningfull.
+" syn match CitationText "\[\@<=[^\]]\+@"me=e-1 containedin=Brackets contained conceal
+syn region CitationText start="@[a-zÀ-ÿ0-9_]\+"rs=e+1 end="\]"re=e-1 containedin=Brackets contained conceal
 syn match CitationKey "@[a-zÀ-ÿ0-9_]\+" containedin=CitationText contained conceal cchar=@ contains=@NoSpell
-syn match CitationKey "@[a-zÀ-ÿ0-9_]\+" contains=@NoSpell containedin=ALLBUT,@NoMD,Url
+syn match CitationKey "@[a-zÀ-ÿ0-9_]\+" contains=@NoSpell containedin=ALLBUT,@NoMD,CitationText,CitationKey,Brackets
 syn match ModifiedQuote "[a-zÀ-ÿ0-9_]*\[[a-zÀ-ÿ0-9_]\+\][a-zÀ-ÿ0-9_]*" contains=@NoSpell containedin=String contained transparent
 syn match ModifiedQuote "\[[^@\]\[]\+\]" contains=@NoSpell containedin=String contained transparent
-syn match FootnoteCall ".\@<=\[\^\S\+\]" contains=@NoSpell conceal cchar=¶
+syn match FootnoteCall "\^[a-zA-Zà-Ÿ0-9_]\+" containedin=Brackets contains=@NoSpell conceal cchar=¶
 syn region _Footnote start="^\[\^\S\+\]:" end="$"
 syn match Footnote "^\[\^\S\+\]:" containedin=_Footnote contained contains=@NoSpell conceal cchar=¶
 syn region FootnoteText start=":\@<=." end="$" containedin=_Footnote contained
