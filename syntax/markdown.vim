@@ -22,11 +22,11 @@ syn match Url "<\?https\?://\S\+" contains=@NoSpell containedin=ALLBUT,@NoMD,URL
 syn region Emphasis start="\*[^[:punct:][:space:]]\@=" skip="\\\*" end="[^[:punct:][:space:]]\@<=\*" contains=@NoSpell keepend
 syn region Emphasis start="\*[^[:punct:][:space:]]\@=" skip="\\\*" end="[^[:punct:][:space:]]\@<=\*" contains=@NoSpell keepend transparent containedin=ALLBUT,@NoMD contained
 syn region Strong start="\S\@<=__\|__\S\@=" skip="\\__" end="\S\@<=__\|__\S\@="
-syn region Code matchgroup=Struct start="`" end="`" contains=@NoSpell containedin=ALLBUT,@NoMD
+syn region Code matchgroup=Struct start="`[^`]"rs=e-1 end="`" contains=@NoSpell containedin=ALLBUT,@NoMD
 syn match ListItem "^\s*[\-\+\*] \|^\s*\d\+\."
 syn match Concept "[^\n]\+\n\n\?:\@=" containedin=ALLBUT,@NoMD
 syn region Definition start="^:" end="$" containedin=ALLBUT,@NoMD
-syn region Code matchgroup=Struct start="^```\S\+" end="^```$" contains=@NoSpell keepend
+syn region Code matchgroup=Struct start="^```[a-z{]\+" end="^```$" contains=@NoSpell keepend
 syn match Title "^.\+\n-\+$" contains=TitleRule
 syn match Title "^.\+\n=\+$" contains=TitleRule
 syn match Title "^#\+ .*" contains=TitleRule
@@ -104,7 +104,7 @@ if exists('g:markdown_polyphony')
     syn region Comment matchgroup=Missing start="^ *\.\.\.\+" end="$" containedin=ALLBUT,@NoMD contains=@NoSpell
     syn region CommentWarning start=",," end="!!" containedin=Comment contained contains=@NoSpell,WarningSign oneline
     syn region String start=/"/ skip=/[^\\]\\"/ end=/"/ keepend 
-    syn region Parenthese start="(" end=")" contains=String,Code,Emphasis containedin=ALLBUT,@NoMD,_Url,Example,String keepend extend
+    syn region Parenthese start="(" end=")" contains=String,Code,Emphasis containedin=ALLBUT,@NoMD,_Url,Example,String extend
     syn match Filepath "\.\+\(/[a-zÀ-ÿ0-9_]\+\(\.[a-zA-Z0-9]\+\)\?\)\+/\?" contains=@NoSpell
     hi def link Parenthese Function
     hi def link Filepath Url
@@ -114,8 +114,10 @@ if exists('g:markdown_polyphony')
     hi def link ToReWrite DiffDelete
     hi def link CommentWarning Comment
     " TODO: make that 'matchadd()' stuff cleaner
+    " TODO: options for each of these highlight
     autocmd BufEnter *.md let x = matchadd("ToReRead", "^??.*")
     autocmd BufEnter *.md let x = matchadd("ToReWrite", "^!!.*")
+    autocmd BufEnter *.md let x = matchadd("ToReWrite", "->.*")
     autocmd BufLeave *.md call clearmatches(0)
 endif
 
